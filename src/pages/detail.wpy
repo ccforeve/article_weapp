@@ -1,0 +1,17 @@
+<template>
+  <web-view src="http://btl.yxcxin.com/article_detail/{{ article_id }}/public"/>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class detail extends wepy.page {
+    data = {
+      article_id: ''
+    }
+    onLoad(option) {
+      this.article_id = option.article_id
+      this.$apply()
+    }
+  }
+</script>

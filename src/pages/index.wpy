@@ -1,0 +1,77 @@
+<style>
+  .weui-grid_active {
+    background-color:#ECECEC
+  }
+  .weui-grid {
+    position:relative;
+    float:left;
+    padding:10px 10px;
+    width:33.33333333%;
+    text-align:center;
+    box-sizing:border-box;
+    border-right:1rpx solid #D9D9D9;
+    border-bottom:1rpx solid #D9D9D9;
+  }
+  navigator {
+    height:auto;
+    width:auto;
+    display:block;
+  }
+  image {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+  }
+  .weui-grid__label {
+    font-size: .7rem;
+  }
+
+</style>
+
+<template>
+  <view class="page">
+    <view class="page__bd">
+      <view class="weui-grids">
+<!--        <block wx:for="{{categories}}" wx:key="*this">-->
+        <repeat for="{{ categories }}" item="category" key="id">
+          <navigator url="/pages/productList?category_id={{ category.online_id }}" class="weui-grid" hover-class="weui-grid_active">
+            <image class="weui-grid__icon" src="../images/category.png" />
+            <view class="weui-grid__label">{{category.name}}</view>
+          </navigator>
+        </repeat>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '@/utils/api'
+
+  export default class Category extends wepy.page {
+    config = {
+      navigationBarTitleText: '产品分类'
+    }
+    data = {
+      categories: []
+    }
+    async onLoad() {
+      let categories = wepy.getStorageSync('categories')
+      if (!categories) {
+        try {
+          let response = await api.request('product_categories')
+          if (response.statusCode === 200) {
+            categories = response.data.data
+            wepy.setStorageSync('categories', categories)
+          }
+        } catch (e) {
+          wepy.showModal({
+            title: '提示',
+            content: '服务器错误，请联系管理员'
+          })
+        }
+      }
+      this.categories = categories
+      this.$apply()
+    }
+  }
+</script>
