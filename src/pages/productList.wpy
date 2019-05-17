@@ -2,6 +2,9 @@
   .weui-media-box__info {
     margin-top: 5px !important;
   }
+  .label-text {
+    color: #000000;
+  }
   .ting {
     color: #b22e08;
   }
@@ -22,6 +25,7 @@
   <view class="page__bd">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">
+        <view class="label-text">当前收录绿叶产品 {{ total }} 种（实时更新）</view>
         <view class="weui-media-box__info">
           <view class="weui-media-box__info__meta ting">[停]商城暂时停售、</view>
           <view class="weui-media-box__info__meta fu">[复]复消产品、</view>
@@ -64,6 +68,7 @@
       // 是否在加载中
       isLoading: false,
       products: [],
+      total: 0,
       category_id: 0,
       option: {},
       state: ''
@@ -81,8 +86,12 @@
           url: 'products/' + this.category_id + '/category',
           data: this.option
         })
+        console.log(productResponse)
         if (productResponse.statusCode === 200) {
-          let products = productResponse.data.data
+          wepy.setNavigationBarTitle({
+            title: productResponse.data.category.name
+          })
+          let products = productResponse.data.products.data
           products.forEach(function (product) {
             let cover = product.cover
             if (cover.indexOf('//img.lvye100.com') >= 0) {
@@ -117,11 +126,11 @@
           // 如果传入参数 reset 为true，则覆盖 topics
           this.products = reset ? products : this.products.concat(products)
           // 判断是否是最后一页
-          if (productResponse.data.current_page === productResponse.data.last_page) {
+          if (productResponse.data.products.current_page === productResponse.data.products.last_page) {
             this.noMoreData = true
           }
+          this.total = productResponse.data.products.total
           this.$apply()
-          console.log(productResponse.data)
         }
       } catch (e) {
         wepy.showModal({

@@ -24,7 +24,10 @@
   .weui-grid__label {
     font-size: .7rem;
   }
-
+  .label-text {
+    font-size: .6rem;
+    color: #777;
+  }
 </style>
 
 <template>
@@ -34,8 +37,9 @@
 <!--        <block wx:for="{{categories}}" wx:key="*this">-->
         <repeat for="{{ categories }}" item="category" key="id">
           <navigator url="/pages/productList?category_id={{ category.online_id }}" class="weui-grid" hover-class="weui-grid_active">
-            <image class="weui-grid__icon" src="../images/category.png" />
+            <image class="weui-grid__icon" src="{{ category.cover }}" />
             <view class="weui-grid__label">{{category.name}}</view>
+            <view class="label-text">({{ category.products_count }}种)</view>
           </navigator>
         </repeat>
       </view>
@@ -49,7 +53,7 @@
 
   export default class Category extends wepy.page {
     config = {
-      navigationBarTitleText: '产品分类'
+      navigationBarTitleText: '绿叶产品价格表'
     }
     data = {
       categories: []
