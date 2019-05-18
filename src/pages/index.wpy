@@ -31,6 +31,7 @@
 </style>
 
 <template>
+  <official-account style=""></official-account>
   <view class="page">
     <view class="page__bd">
       <view class="weui-grids">
