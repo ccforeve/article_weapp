@@ -1,17 +1,49 @@
 <template>
-  <web-view src="http://btl.yxcxin.com/article_detail/{{ article_id }}/public"/>
+  <web-view src="https://btl.yxcxin.com/article_detail/{{ article_id }}/public"/>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import api from '@/utils/api'
 
   export default class detail extends wepy.page {
     data = {
-      article_id: ''
+      article_id: '',
+      title: ''
     }
-    onLoad(option) {
-      this.article_id = option.article_id
-      this.$apply()
+    async onLoad(option) {
+      try {
+        let responseDetail = await api.request('articles/' + option.article_id + '/detail')
+        if (responseDetail.statusCode === 200) {
+          this.title = responseDetail.data.title
+          wepy.setNavigationBarTitle({
+            title: responseDetail.data.title
+          })
+        }
+        this.article_id = option.article_id
+        this.$apply()
+      } catch (e) {
+        wepy.showModal({
+          title: '提示',
+          content: '服务器错误，请联系管理员'
+        })
+      }
+    }
+    onShareAppMessage (res) {
+      return {
+        // 标题是话题标题
+        title: this.title,
+        // 路径为话题详情路径
+        path: '/pages/detail?article_id=' + this.article_id,
+        success: function(res) {
+          // 转发成功
+          console.log(res)
+        },
+        fail: function(res) {
+          // 转发失败
+          console.log(res)
+        }
+      }
     }
   }
 </script>

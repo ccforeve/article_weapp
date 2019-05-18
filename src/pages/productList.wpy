@@ -71,7 +71,8 @@
       total: 0,
       category_id: 0,
       option: {},
-      state: ''
+      state: '',
+      title: ''
     }
     async onLoad(options) {
       this.category_id = options.category_id
@@ -86,8 +87,8 @@
           url: 'products/' + this.category_id + '/category',
           data: this.option
         })
-        console.log(productResponse)
         if (productResponse.statusCode === 200) {
+          this.title = productResponse.data.category.name
           wepy.setNavigationBarTitle({
             title: productResponse.data.category.name
           })
@@ -149,7 +150,6 @@
     // 加载更多
     async onReachBottom () {
       // 如果没有更多数据，或者正在加载，直接返回
-      console.log(this.noMoreData, this.isLoading)
       if (this.noMoreData || this.isLoading) {
         return
       }
@@ -161,6 +161,22 @@
       // 开始结束后设置 isLoading 为 false
       this.isLoading = false
       this.$apply()
+    }
+    onShareAppMessage (res) {
+      return {
+        // 标题是话题标题
+        title: this.title,
+        // 路径为话题详情路径
+        path: '/pages/productList?category_id=' + this.category_id,
+        success: function(res) {
+          // 转发成功
+          console.log(res)
+        },
+        fail: function(res) {
+          // 转发失败
+          console.log(res)
+        }
+      }
     }
   }
 </script>

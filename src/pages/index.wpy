@@ -59,23 +59,39 @@
       categories: []
     }
     async onLoad() {
-      let categories = wepy.getStorageSync('categories')
-      if (!categories) {
-        try {
-          let response = await api.request('product_categories')
-          if (response.statusCode === 200) {
-            categories = response.data.data
-            wepy.setStorageSync('categories', categories)
-          }
-        } catch (e) {
-          wepy.showModal({
-            title: '提示',
-            content: '服务器错误，请联系管理员'
-          })
+      // let categories = wepy.getStorageSync('categories')
+      // if (!categories) {
+      try {
+        let response = await api.request('product_categories')
+        if (response.statusCode === 200) {
+          this.categories = response.data.data
+          // wepy.setStorageSync('categories', categories)
+        }
+      } catch (e) {
+        wepy.showModal({
+          title: '提示',
+          content: '服务器错误，请联系管理员'
+        })
+      }
+      // }
+      // this.categories = categories
+      this.$apply()
+    }
+    onShareAppMessage (res) {
+      return {
+        // 标题是话题标题
+        title: '绿叶产品价格表',
+        // 路径为话题详情路径
+        path: '/pages/index',
+        success: function(res) {
+          // 转发成功
+          console.log(res)
+        },
+        fail: function(res) {
+          // 转发失败
+          console.log(res)
         }
       }
-      this.categories = categories
-      this.$apply()
     }
   }
 </script>
