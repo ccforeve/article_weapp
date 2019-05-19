@@ -15,12 +15,13 @@
       this.$apply()
     }
     onShow() {
+      wepy.hideToast()
       let params = this.params
       if (params.paySign) {
         wepy.requestPayment({
           timeStamp: params.timestamp,
           nonceStr: params.nonceStr,
-          package: params.package,
+          package: 'prepay_id=' + params.package,
           signType: 'MD5',
           paySign: params.paySign,
           success(res) {
@@ -30,6 +31,7 @@
               icon: 'success',
               duration: 2000
             })
+            this.is_show = true
           },
           fail(res) {
             console.log(res)
@@ -38,6 +40,7 @@
               image: '/images/error.png',
               duration: 2000
             })
+            this.is_show = true
           },
           complete(res) {
             console.log(res)
@@ -46,6 +49,7 @@
               image: '/images/error.png',
               duration: 2000
             })
+            this.is_show = true
           }
         })
       } else {
@@ -54,13 +58,9 @@
           image: '/images/error.png',
           duration: 2000
         })
+        this.is_show = true
       }
-      wepy.hideToast()
-      let _this = this
-      setTimeout(function () {
-        _this.is_show = true
-        _this.$apply()
-      }, 2000)
+      this.$apply()
     }
   }
 </script>
