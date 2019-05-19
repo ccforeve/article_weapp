@@ -1,5 +1,6 @@
 <template>
-  <web-view src="https://btl.yxcxin.com/article_detail/{{ article_id }}/public"/>
+<!--  <view wx:if="{{ is_show }}">111</view>-->
+  <web-view wx:if="{{ is_show }}" src="https://btl.yxcxin.com/article_detail/{{ article_id }}/public"/>
 </template>
 
 <script>
@@ -8,10 +9,12 @@
 
   export default class detail extends wepy.page {
     data = {
+      is_show: false,
       article_id: '',
       title: ''
     }
     async onLoad(option) {
+      wepy.showLoading({title: '加载中'})
       try {
         let responseDetail = await api.request('articles/' + option.article_id + '/detail')
         if (responseDetail.statusCode === 200) {
@@ -21,13 +24,20 @@
           })
         }
         this.article_id = option.article_id
+        this.is_show = true
         this.$apply()
+        wepy.hideLoading()
       } catch (e) {
         wepy.showModal({
           title: '提示',
           content: '服务器错误，请联系管理员'
         })
       }
+    }
+    onUnload() {
+      this.is_show = false
+      this.$apply()
+      console.log('页面销毁')
     }
     onShareAppMessage (res) {
       return {

@@ -1,0 +1,66 @@
+<template>
+  <web-view wx:if="{{ is_show }}" src="https://btl.yxcxin.com"></web-view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class pay extends wepy.page {
+    data = {
+      is_show: false,
+      params: []
+    }
+    onLoad(option) {
+      this.params = option
+      wepy.showLoading({title: '支付中'})
+      this.$apply()
+    }
+    onShow() {
+      let params = this.params
+      if (params.paySign) {
+        wepy.requestPayment({
+          timeStamp: params.timestamp,
+          nonceStr: params.nonceStr,
+          package: params.package,
+          signType: 'MD5',
+          paySign: params.paySign,
+          success(res) {
+            console.log(res)
+            wepy.showToast({
+              title: '支付成功',
+              icon: 'success',
+              duration: 2000
+            })
+          },
+          fail(res) {
+            console.log(res)
+            wepy.showToast({
+              title: '支付失败1',
+              image: '/images/error.png',
+              duration: 2000
+            })
+          },
+          complete(res) {
+            console.log(res)
+            wepy.showToast({
+              title: '支付失败2',
+              image: '/images/error.png',
+              duration: 2000
+            })
+          }
+        })
+      } else {
+        wepy.showToast({
+          title: '支付失败',
+          image: '/images/error.png',
+          duration: 2000
+        })
+      }
+      wepy.hideToast()
+      let _this = this
+      setTimeout(function () {
+        _this.is_show = true
+        _this.$apply()
+      }, 2000)
+    }
+  }
+</script>

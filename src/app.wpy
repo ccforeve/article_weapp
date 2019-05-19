@@ -40,7 +40,8 @@ export default class extends wepy.app {
     pages: [
       'pages/index',
       'pages/productList',
-      'pages/detail'
+      'pages/detail',
+      'pages/pay'
     ],
     window: {
       backgroundTextStyle: 'light',
