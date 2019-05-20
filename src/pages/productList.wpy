@@ -22,6 +22,7 @@
   }
 </style>
 <template>
+  <official-account></official-account>
   <view class="page__bd">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">
