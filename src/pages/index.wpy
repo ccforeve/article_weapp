@@ -64,7 +64,6 @@
         let response = await api.request('product_categories')
         if (response.statusCode === 200) {
           this.categories = response.data.data
-          // wepy.setStorageSync('categories', categories)
         }
       } catch (e) {
         wepy.showModal({
