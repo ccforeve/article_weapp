@@ -36,7 +36,7 @@
       </view>
       <view class="weui-panel__bd">
         <repeat for="{{ products }}" key="id" index="index" item="product">
-          <navigator url="/pages/detail?article_id={{ product.article.id }}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+          <navigator url="/pages/detail?article_id={{ product.article.id }}&user_id={{ user_id }}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
             <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
               <image class="weui-media-box__thumb" src="{{ product.cover }}" />
             </view>
@@ -69,6 +69,7 @@
       // 是否在加载中
       isLoading: false,
       products: [],
+      user_id: 0,
       total: 0,
       category_id: 0,
       option: {},
@@ -78,6 +79,10 @@
     async onLoad(options) {
       this.category_id = options.category_id
       await this.getProducts()
+      if (wx.getStorageSync('user_id')) {
+        this.user_id = wx.getStorageSync('user_id')
+        this.$apply()
+      }
     }
     async getProducts(reset = false) {
       if (!this.option.page) {

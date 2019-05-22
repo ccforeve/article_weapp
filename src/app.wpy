@@ -42,7 +42,8 @@ export default class extends wepy.app {
       'pages/index',
       'pages/productList',
       'pages/detail',
-      'pages/pay'
+      'pages/pay',
+      'pages/toLogin'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -50,6 +51,9 @@ export default class extends wepy.app {
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
     }
+  }
+  data = {
+    has_user: false
   }
   globalData = {
     userInfo: null
@@ -59,18 +63,56 @@ export default class extends wepy.app {
     this.use('requestfix')
     this.use('promisify')
   }
-  async onLoad() {
-    let unionid = wx.getStorageSync('unionid')
-    // 获取unionid
-    if (!unionid) {
-      let login = await wepy.login()
-      let user = await api.request('user/miniprogram_login?code=' + login.code)
-      if (!user.data.unionid) {
-        wx.authorize({scope: 'scope.userInfo'})
-        user = await wx.getUserInfo()
-      }
-      wx.setStorageSync('unionid', user.data.unionid)
+  async onLaunch() {
+    let login = await wepy.login()
+    let user = await api.request('miniprogram/user/login?code=' + login.code)
+    if (user.data.code === 401) {
+      this.getUser(user.data.data.session_key)
+    } else {
+      // 缓存用户id
+      wx.setStorageSync('user_id', user.data.user_id)
     }
+  }
+  async getUser(session) {
+    let _wx = wx
+    wx.getUserInfo({
+      withCredentials: true,
+      success: function (res) {
+        var user = res
+        user.session_key = session
+        // 接下来写业务代码
+        let option = {
+          url: 'miniprogram/user/check_user',
+          method: 'get',
+          data: user
+        }
+        try {
+          api.request(option).then(function (res) {
+            if (res.data.code === 200) {
+              // 缓存用户id
+              _wx.setStorageSync('user_id', res.data.user_id)
+            }
+          })
+        } catch (e) {
+          wepy.showModal({
+            title: '提示',
+            content: '服务器错误，请联系管理员'
+          })
+        }
+      },
+      fail: function (res) {
+        wx.showModal({
+          title: '警告',
+          content: '尚未进行授权，请点击确定跳转到授权页面进行授权。',
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              wx.navigateTo({url: '/pages/toLogin'})
+            }
+          }
+        })
+      }
+    })
   }
 }
 </script>
