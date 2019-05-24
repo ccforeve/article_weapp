@@ -18,7 +18,7 @@
       wepy.showLoading({title: '支付中'})
       this.params = option
       wepy.login().then(function (res) {
-        api.request('user/miniprogram_login?code=' + res.code).then(function (user) {
+        api.request('miniprogram/user/login?code=' + res.code).then(function (user) {
           _this.openid = user.data.openid
           _this.$apply()
           _this.miniprogramPay()
