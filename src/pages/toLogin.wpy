@@ -1,5 +1,7 @@
 <template>
-  <button type="primary" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">登录</button>
+  <view class="login">
+    <button type="primary" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">登录</button>
+  </view>
 </template>
 
 <script>
@@ -30,3 +32,9 @@ export default class tologin extends wepy.page {
   }
 }
 </script>
+
+<style>
+  .login{
+    padding-top: 50%;
+  }
+</style>

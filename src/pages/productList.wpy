@@ -79,9 +79,19 @@
     async onLoad(options) {
       this.category_id = options.category_id
       await this.getProducts()
+    }
+    async onShow() {
       if (wx.getStorageSync('user_id')) {
         this.user_id = wx.getStorageSync('user_id')
         this.$apply()
+      } else {
+        let login = await wepy.login()
+        let user = await api.request('miniprogram/user/login?code=' + login.code)
+        if (user.data.code === 200) {
+          wx.setStorageSync('user_id', user.data.user_id)
+          this.user_id = user.data.user_id
+          this.$apply()
+        }
       }
     }
     async getProducts(reset = false) {

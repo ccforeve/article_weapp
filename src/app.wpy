@@ -67,7 +67,8 @@ export default class extends wepy.app {
     let login = await wepy.login()
     let user = await api.request('miniprogram/user/login?code=' + login.code)
     if (user.data.code === 401) {
-      this.getUser(user.data.data.session_key)
+      this.getUser(user.data.session_key)
+      wx.setStorageSync('session_key', user.data.session_key)
     } else {
       // 缓存用户id
       wx.setStorageSync('user_id', user.data.user_id)
