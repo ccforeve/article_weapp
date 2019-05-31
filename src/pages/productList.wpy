@@ -45,6 +45,7 @@
               <view class="weui-media-box__desc">{{ product.desc }}</view>
             </view>
           </navigator>
+          <ad unit-id="adunit-339b94eca8c9de27" wx:if="{{ index !== 0 && index % 15 == 0 }}"></ad>
         </repeat>
         <view class="weui-loadmore weui-loadmore_line" wx:if="{{ noMoreData }}">
           <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多数据</view>
