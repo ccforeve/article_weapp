@@ -1,4 +1,20 @@
 <style>
+  @font-face {
+    font-family: 'iconfont';  /* project id 1314494 */
+    src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot');
+    src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.svg#iconfont') format('svg');
+  }
+  .iconfont{
+    font-family:"iconfont" !important;
+    font-size:18px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+  }
   .weui-media-box__info {
     margin-top: 5px !important;
   }
@@ -19,6 +35,12 @@
   }
   .yu-padding {
     padding-top: 5px;
+  }
+  .collection {
+    position: absolute;
+    right: 10px;
+    color: #999;
+    display: block;
   }
 </style>
 <template>
@@ -43,6 +65,9 @@
             <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
               <view class="weui-media-box__title {{ product.text_color }}">{{ product.state_text }}{{ product.name }}</view>
               <view class="weui-media-box__desc">{{ product.desc }}</view>
+            </view>
+            <view class="collection">
+              <i class="iconfont">&#xe629;</i>
             </view>
           </navigator>
           <ad unit-id="adunit-339b94eca8c9de27" wx:if="{{ index !== 0 && index % 15 == 0 }}"></ad>
@@ -135,8 +160,7 @@
             } else if (product.kind === 3) {
               product.state_text = '[预]'
               product.text_color = 'yu'
-            }
-            if (product.state === 0) {
+            } else if (product.state === 0) {
               product.state_text = '[停]'
               product.text_color = 'ting'
             }
