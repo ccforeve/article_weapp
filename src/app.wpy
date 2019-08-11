@@ -44,7 +44,9 @@ export default class extends wepy.app {
       'pages/detail',
       'pages/pay',
       'pages/toLogin',
-      'pages/collection'
+      'pages/collection',
+      'pages/collectionlist',
+      'pages/collectionlistLook'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -61,6 +63,17 @@ export default class extends wepy.app {
       }, {
         pagePath: 'pages/collection',
         text: '收藏',
+        iconPath: 'images/dir.png',
+        selectedIconPath: 'images/dir_select.png'
+      }, {
+        pagePath: 'pages/collectionlist',
+        text: '收藏列表',
+        iconPath: 'images/dir.png',
+        selectedIconPath: 'images/dir_select.png'
+      },
+      {
+        pagePath: 'pages/collectionlistLook',
+        text: '收藏列表',
         iconPath: 'images/dir.png',
         selectedIconPath: 'images/dir_select.png'
       }]
