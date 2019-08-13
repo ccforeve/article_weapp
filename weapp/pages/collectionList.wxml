@@ -1,0 +1,69 @@
+
+<view>
+  <view class="collection">
+    <view class="headTitle">
+      <text>收藏夹1</text>
+    </view>
+    <view class="desc">
+      <label>这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111</label>
+    </view>
+    <view class="operation">
+      <text class="iconfont icon-show">描述</text>
+      <text class="iconfont icon-edit">编辑</text>
+      <text class="iconfont icon-delete">删除</text>
+    </view>
+    
+    <view class="prodList">
+      <view class="prodBox">
+        <view class="prodImg">
+          <image src="http://img.lvye100.com/pxs/BMLQhHX7ImMzUuSY.png" alt="" class="image">
+        </image></view>
+        <view class="prodMess">
+          <text class="prodTitle">[预]卡利斯1Kg蜜桃美肌沐浴露</text>
+          <text class="prodTitle">零售:34.90元, 会员:19.90元+15.00券</text>
+        </view>
+        <view class="prodFoot">
+          <text>
+            <text class="add">+</text>
+            <text class="prodNum">4</text>
+            <text class="rud">-</text>
+          </text>
+          <text class="unit">单位: 瓶</text>
+        </view>
+        <text class=" iconfont iconDel icon-iconDel"></text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="numFooter">
+    <view class="price">
+      <text>总数量：<text>7</text></text>
+      <text class="prodTitle">零售:34.90元, 会员:19.90元+15.00券</text>
+    </view>
+    <view class="priceBtn">
+      <text>确认数量</text>
+    </view>
+  </view>
+  
+  <view class="mark"></view>
+  <view class="fidDalog">
+    <view>
+      <text class=" iconfont delTip icon-delTip"></text>
+    </view>
+    <view>你确定要删除此内容么</view>
+    <view>
+      <text class="yesBtn">确定</text>
+      <text class="noBtn">取消</text>
+    </view>
+  </view>
+  
+  <view class="descBox">
+    <view class="descMess">
+      <text>
+        这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111
+      这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111
+      </text>
+    </view>
+    <view class="messTrue">知道了</view>
+  </view>
+</view>

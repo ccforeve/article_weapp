@@ -1,97 +1,125 @@
 <style lang="less">
-.mylist:odd {
-  color: red;
-}
-.mylist:even {
-  color: green;
-}
-@font-face {
-  font-family: 'iconfont'; /* project id 1314494 */
-  src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot');
-  src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot?#iefix')
-      format('embedded-opentype'),
+  .mylist:odd {
+    color: red;
+  }
+  .mylist:even {
+    color: green;
+  }
+  @font-face {
+    font-family: 'iconfont'; /* project id 1314494 */
+    src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot');
+    src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot?#iefix')
+    format('embedded-opentype'),
     url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.woff2') format('woff2'),
     url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.woff') format('woff'),
     url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.ttf') format('truetype'),
     url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.svg#iconfont') format('svg');
-}
-.iconfont {
-  font-family: 'iconfont' !important;
-  font-size: 18px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-stroke-width: 0.2px;
-  -moz-osx-font-smoothing: grayscale;
-}
-.headTitle {
-  width: 200px;
-  height: 24px;
-  color: rgba(16, 16, 16, 1);
-  font-size: 18px;
-  text-align: left;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(187, 187, 187, 1);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.collection {
-  padding: 10px 10px 0 15px;
-}
-.list {
-  margin-top: 8px;
-  width: 100%;
-}
-.prodBox {
-  border-bottom: 1px dashed rgba(187, 187, 187, 1);
-  font-size: 14px;
-  width: 100%;
-  padding-bottom: 5px;
-  margin-top: 5px;
-}
-.prdTitle {
-  font-size: 15px;
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-weight: 600;
-}
-.bRight {
-  float: right;
-}
-.prdMess {
-  width: 60%;
-  display: inline-block;
-}
-.boxHead {
-  margin-bottom: 5px;
-}
+  }
+  .iconfont {
+    font-family: 'iconfont' !important;
+    font-size: 18px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .icon_collection::before {
+    content: "\e629";
+  }
+  .headTitle {
+    width: 50%;
+    height: 24px;
+    color: rgba(16, 16, 16, 1);
+    font-size: 18px;
+    text-align: left;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(187, 187, 187, 1);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .collection {
+    padding: 10px 15px 0 15px;
+  }
+  .list {
+    margin-top: 8px;
+    width: 100%;
+  }
+  .prodBox {
+    border-bottom: 1px dashed rgba(187, 187, 187, 1);
+    font-size: 14px;
+    width: 100%;
+    padding-bottom: 5px;
+    margin-top: 5px;
+  }
+  .prdTitle {
+    font-size: 15px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 600;
+  }
+  .bRight {
+    float: right;
+  }
+  .prdMess {
+    width: 72%;
+    display: inline-block;
+  }
+  .boxHead {
+    margin-bottom: 5px;
+  }
 </style>
 <template>
   <view class="collection">
     <view class="headTitle">
-      <i class="iconfont">&#xe629;</i><span> 王玉良的收藏夹</span>
+      <i class="iconfont icon_collection">王玉良的收藏夹</i>
     </view>
     <!-- 收藏列表 -->
     <view class="list">
-      <view class="prodBox">
+      <navigator url="/pages/collectionList" class="prodBox" v-for="collector in collectors">
         <view class="boxHead">
-          <span class="prdTitle">收藏的产品</span><span class="bRight">20个</span>
+          <span class="prdTitle">{{ collector.title }}</span><span class="bRight">{{ collector.collections_count }}个</span>
         </view>
         <view>
-          <span class="prdMess">这是描述这是描述这是描述是。。</span><span class="bRight">10分钟前</span>
+          <span class="prdMess">{{ collector.desc }}</span><span class="bRight">{{ collector.created_at }}</span>
         </view>
-      </view>
-      <!-- 盒子 -->
-      <view class="prodBox">
-        <view class="boxHead">
-          <span class="prdTitle">收藏的产品</span><span class="bRight">20个</span>
-        </view>
-        <view>
-          <span class="prdMess">这是描述这是描述这是描述是。。</span><span class="bRight">10分钟前</span>
-        </view>
-      </view>
+      </navigator>
     </view>
   </view>
 </template>
+
+<script>
+  import wepy from '@wepy/core'
+  import api from '@/utils/request'
+
+  wepy.page({
+    data: {
+      collectors: []
+    },
+    async onLoad(options) {
+      let userId = wx.getStorageSync('user_id')
+      if (!userId) {
+        wx.showToast({title: '未授权登录', icon: 'none'})
+        wx.navigateTo({url: '/pages/toLogin'})
+        return false
+      }
+      await this.getCollections()
+    },
+    methods: {
+      async getCollections () {
+        let collectorList = await api.request('collector', 'get')
+        this.collectors = collectorList.data
+        console.log(collectorList.data)
+      }
+    }
+  })
+</script>
+
+<config>
+  {
+  enablePullDownRefresh: true,
+  navigationBarTitleText: '收藏夹'
+  }
+</config>

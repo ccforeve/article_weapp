@@ -4,19 +4,19 @@
 </template>
 
 <script>
-  import wepy from 'wepy'
+  import wepy from '@wepy/core'
   import api from '@/utils/api'
 
-  export default class detail extends wepy.page {
-    data = {
+  wepy.page({
+    data: {
       is_show: false,
       article_id: 0,
       user_article_id: 0,
       user_id: 0,
       title: '',
       article_type: 1
-    }
-    computed = {
+    },
+    computed: {
       webUrl() {
         if (this.article_type === 1) {
           return `article_detail/${this.article_id}/public`
@@ -24,7 +24,7 @@
           return `article_detail/${this.user_article_id}/user`
         }
       }
-    }
+    },
     async onLoad(option) {
       wepy.showLoading({title: '加载中'})
       try {
@@ -61,12 +61,12 @@
           content: '服务器错误，请联系管理员'
         })
       }
-    }
+    },
     onUnload() {
       this.is_show = false
       this.$apply()
       console.log('页面销毁')
-    }
+    },
     onShareAppMessage (res) {
       return {
         // 标题是话题标题
@@ -83,5 +83,5 @@
         }
       }
     }
-  }
+  })
 </script>

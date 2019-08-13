@@ -1,47 +1,17 @@
 {
-	"description": "lvye weapp project",
+	"description": "show products",
 	"setting": {
 		"urlCheck": true,
 		"es6": false,
 		"postcss": false,
-		"minified": false,
-		"newFeature": true,
-		"autoAudits": false,
-		"checkInvalidKey": true
+		"minified": false
 	},
 	"compileType": "miniprogram",
 	"appid": "wxfce328ed3c937da6",
-	"projectname": "lvye_weapp",
-	"miniprogramRoot": "dist/",
+	"projectname": "lvye_products",
+	"miniprogramRoot": "weapp/",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"libVersion": "2.7.0",
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"list": []
-		},
-		"miniprogram": {
-			"current": 0,
-			"list": [
-				{
-					"id": -1,
-					"name": "关注",
-					"pathName": "pages/index",
-					"scene": 1047
-				}
-			]
-		}
-	}
+	"libVersion": "2.8.0",
+	"condition": {}
 }

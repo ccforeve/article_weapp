@@ -1,0 +1,4 @@
+
+<view class="login">
+  <button type="primary" open-type="getUserInfo" data-wpy-evt="14-0" bindgetuserinfo="_proxy">登录</button>
+</view>

@@ -1,0 +1,70 @@
+
+<view>
+  <view class="collection">
+    <view class="headTitle">
+      <label>收藏夹1</label>
+    </view>
+    <view class="desc">
+      <label>这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111</label>
+    </view>
+    <view class="operation">
+      <text class="iconfont icon-edit">描述</text>
+      <text class="iconfont icon-copy">复制收藏夹</text>
+    </view>
+    
+    <view class="prodList">
+      <view class="prodBox">
+        <text class="prodImg">
+          <image src="http://img.lvye100.com/pxs/BMLQhHX7ImMzUuSY.png" alt="" class="image">
+        </image></text>
+        <view class="prodMess">
+          <text class="prodTitle"><text>[预]</text>卡利斯1Kg蜜桃美肌沐浴露</text>
+          <text class="prodTitle">零售:<text>34.90元</text>, 会员:<text>19.90元</text>+<text>15.00券</text></text>
+        </view>
+        <text class="prodNum"><text>4</text>瓶</text>
+      </view>
+      <view class="prodBox">
+        <text class="prodImg">
+          <image src="http://img.lvye100.com/pxs/BMLQhHX7ImMzUuSY.png" alt="" class="image">
+        </image></text>
+        <view class="prodMess">
+          <text class="prodTitle"><text>[预]</text>卡利斯1Kg蜜桃美肌沐浴露</text>
+          <text class="prodTitle">零售:<text>34.90元</text>, 会员:<text>19.90元</text>+<text>15.00券</text></text>
+        </view>
+        <text class="prodNum"><text>4</text>瓶</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="numFooter">
+    <view class="price">
+      <text>总数量：<text>7</text></text>
+      <text class="prodTitle">零售:<text>34.90元</text>, 会员:<text>19.90元</text>+<text>15.00券</text></text>
+    </view>
+    <view class="priceBtn">
+      <text>复制收藏夹</text>
+    </view>
+  </view>
+  
+  <view class="mark"></view>
+  <view class="fidDalog">
+    <view>
+      <text class="iconfont delTip icon-delete"></text>
+    </view>
+    <view>你确定要删除此内容么</view>
+    <view>
+      <text class="yesBtn">确定</text>
+      <text class="noBtn">取消</text>
+    </view>
+  </view>
+  
+  <view class="descBox">
+    <view class="descMess">
+      <text>
+        这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111
+        这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111
+      </text>
+    </view>
+    <view class="messTrue">知道了</view>
+  </view>
+</view>

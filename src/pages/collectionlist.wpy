@@ -22,6 +22,21 @@
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon-show::before {
+    content: "\e621";
+}
+.icon-edit::before {
+    content: "\e622";
+}
+.icon-delete::before {
+    content: "\e600";
+}
+.icon-iconDel::before {
+    content: "\e607";
+}
+.icon-delTip::before {
+    content: "\e60c";
+}
 .iconDel {
   font-size: 18px;
   position: absolute;
@@ -50,7 +65,7 @@
 }
 
 .collection {
-  padding: 10px 10px 0 15px;
+  padding: 10px 15px 0 15px;
 }
 .operation {
   height: 40px;
@@ -60,11 +75,11 @@
   text-align: right;
   border-bottom: 1px solid rgba(187, 187, 187, 1);
 }
-.operation span:nth-child(2) {
-  margin: 0 8px;
+.operation text:nth-child(2) {
+  margin: 0 12px;
 }
 .prodBox {
-  padding: 18px 0 40px 15px;
+  padding: 18px 0 40px;
   position: relative;
   border-bottom: 1px dashed rgba(187, 187, 187, 1);
 }
@@ -101,7 +116,7 @@
 .prodFoot {
   font-size: 13px;
 }
-.prodFoot > span {
+.prodFoot > text {
   float: right;
 }
 .add,
@@ -143,7 +158,7 @@
   width: 25%;
   vertical-align: middle;
 }
-.priceBtn span {
+.priceBtn text {
   width: 60px;
   height: 25px;
   display: inline-block;
@@ -161,7 +176,7 @@
   width: 65%;
   height: 185px;
   border: 1px solid rgba(187, 187, 187, 1);
-  top: 30%;
+  top: 23%;
   background: #ffffff;
   left: 17.5%;
   text-align: center;
@@ -213,7 +228,7 @@
   display: none;
 }
 .descMess span{
-  padding: 10px 10% 15px 10px;
+  padding: 10px 10px 15px 10px;
   line-height: 20px;
   height: 70px;
   display: -webkit-box;
@@ -228,93 +243,78 @@
   font-size: 15px;
   line-height: 30px;
 }
+.image {
+  width: 100%;
+  height: 100%;
+}
 </style>
 <template>
   <view>
     <view class="collection">
       <view class="headTitle">
-        <span>收藏夹1</span>
+        <text>收藏夹1</text>
       </view>
       <view class="desc">
         <span>这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111</span>
       </view>
       <view class="operation">
-        <span><i class="iconfont">&#xe621;</i> 描述</span>
-        <span><i class="iconfont">&#xe622;</i> 编辑</span>
-        <span><i class="iconfont">&#xe600;</i> 删除</span>
+        <text class="iconfont icon-show">描述</text>
+        <text class="iconfont icon-edit">编辑</text>
+        <text class="iconfont icon-delete">删除</text>
       </view>
       <!-- 产品列表 -->
       <view class="prodList">
         <view class="prodBox">
-          <span class="prodImg">
-            <img src="" alt="">
-          </span>
+          <view class="prodImg">
+            <img src="http://img.lvye100.com/pxs/BMLQhHX7ImMzUuSY.png" alt="" class="image">
+          </view>
           <view class="prodMess">
-            <span class="prodTitle"><b>[预]</b>卡利斯1Kg蜜桃美肌沐浴露</span>
-            <span class="prodTitle">零售:<i>34.90元</i>, 会员:<i>19.90元</i>+<i>15.00券</i></span>
+            <text class="prodTitle">[预]卡利斯1Kg蜜桃美肌沐浴露</text>
+            <text class="prodTitle">零售:34.90元, 会员:19.90元+15.00券</text>
           </view>
           <view class="prodFoot">
-            <span>
-              <i class="add">+</i>
-              <i class="prodNum">4</i>
-              <i class="rud">-</i>
-            </span>
-            <span class="unit">单位: <i>瓶</i></span>
+            <text>
+              <text class="add">+</text>
+              <text class="prodNum">4</text>
+              <text class="rud">-</text>
+            </text>
+            <text class="unit">单位: 瓶</text>
           </view>
-          <span><i class=" iconfont iconDel">&#xe607;</i></span>
-        </view>
-        <view class="prodBox">
-          <span class="prodImg">
-            <img src="" alt="">
-          </span>
-          <view class="prodMess">
-            <span class="prodTitle"><b>[预]</b>卡利斯1Kg蜜桃美肌沐浴露</span>
-            <span class="prodTitle">零售:<i>34.90元</i>, 会员:<i>19.90元</i>+<i>15.00券</i></span>
-          </view>
-          <view class="prodFoot">
-            <span>
-              <i class="add">+</i>
-              <i class="prodNum">4</i>
-              <i class="rud">-</i>
-            </span>
-            <span class="unit">单位: <i>瓶</i></span>
-          </view>
-          <span><i class=" iconfont iconDel">&#xe607;</i></span>
+          <text class=" iconfont iconDel icon-iconDel"></text>
         </view>
       </view>
     </view>
     <!-- 确认数量footer -->
     <view class="numFooter">
       <view class="price">
-        <span>总数量：<i>7</i></span>
-        <span class="prodTitle">零售:<i>34.90元</i>, 会员:<i>19.90元</i>+<i>15.00券</i></span>
+        <text>总数量：<text>7</text></text>
+        <text class="prodTitle">零售:34.90元, 会员:19.90元+15.00券</text>
       </view>
       <view class="priceBtn">
-        <span>确认数量</span>
+        <text>确认数量</text>
       </view>
     </view>
     <!-- 删除弹窗 -->
     <view class="mark"></view>
     <view class="fidDalog">
       <view>
-        <span><i class=" iconfont delTip">&#xe60c;</i></span>
+        <text class=" iconfont delTip icon-delTip"></text>
       </view>
       <view>你确定要删除此内容么</view>
       <view>
-        <span class="yesBtn">确定</span>
-        <span class="noBtn">取消</span>
+        <text class="yesBtn">确定</text>
+        <text class="noBtn">取消</text>
       </view>
     </view>
     <!-- 描述 -->
     <view class="descBox">
       <view class="descMess">
-        <span>
+        <text>
           这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111
         这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111
-        </span>
+        </text>
       </view>
       <view class="messTrue">知道了</view>
     </view>
   </view>
 </template>
-

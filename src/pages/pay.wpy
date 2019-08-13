@@ -3,16 +3,16 @@
 </template>
 
 <script>
-  import wepy from 'wepy'
+  import wepy from '@wepy/core'
+  // import store from '../store'
   import api from '@/utils/api'
 
-  export default class pay extends wepy.page {
-    data = {
+  wepy.page({
+    data: {
       openid: '',
       is_show: false,
       params: []
-    }
-
+    },
     onLoad(option) {
       let _this = this
       wepy.showLoading({title: '支付中'})
@@ -24,8 +24,7 @@
           _this.miniprogramPay()
         })
       })
-    }
-
+    },
     async miniprogramPay() {
       let params = this.params
       let _this = this
@@ -58,5 +57,5 @@
         _this.$apply()
       })
     }
-  }
+  })
 </script>

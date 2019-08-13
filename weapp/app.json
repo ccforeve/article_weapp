@@ -1,0 +1,36 @@
+{
+    "pages": [
+        "pages/index",
+        "pages/productList",
+        "pages/detail",
+        "pages/pay",
+        "pages/toLogin",
+        "pages/collection",
+        "pages/collectionList",
+        "pages/collectionShare"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "WeChat",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "list": [
+            {
+                "pagePath": "pages/index",
+                "text": "首页",
+                "iconPath": "images/home.png",
+                "selectedIconPath": "images/home_select.png"
+            },
+            {
+                "pagePath": "pages/collection",
+                "text": "收藏",
+                "iconPath": "images/dir.png",
+                "selectedIconPath": "images/dir_select.png"
+            }
+        ]
+    },
+    "component": true,
+    "usingComponents": {}
+}

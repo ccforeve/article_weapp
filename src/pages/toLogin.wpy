@@ -1,3 +1,9 @@
+<style>
+  .login{
+    padding-top: 50%;
+  }
+</style>
+
 <template>
   <view class="login">
     <button type="primary" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">登录</button>
@@ -5,36 +11,27 @@
 </template>
 
 <script>
-import wepy from 'wepy'
-import api from '@/utils/api'
+import wepy from '@wepy/core'
+import api from '@/utils/request'
 
-export default class tologin extends wepy.page {
-  async bindGetUserInfo(e) {
-    var user = e.detail
-    user.session_key = wx.getStorageSync('session_key')
-    // 接下来写业务代码
-    console.log(user)
-    let option = {
-      url: 'miniprogram/user/check_user',
-      method: 'get',
-      data: user
+wepy.page({
+  methods: {
+    async bindGetUserInfo(e) {
+      let user = e.$wx.detail
+      console.log(user)
+      user.session_key = wx.getStorageSync('session_key')
+      // 接下来写业务代码
+      try {
+        await api.request('miniprogram/user/check_user', 'get', user)
+      } catch (e) {
+        wx.showModal({
+          title: '提示',
+          content: '服务器错误，请联系管理员'
+        })
+      }
+      // 最后，记得返回刚才的页面
+      wx.navigateBack()
     }
-    try {
-      await api.request(option)
-    } catch (e) {
-      wepy.showModal({
-        title: '提示',
-        content: '服务器错误，请联系管理员'
-      })
-    }
-    // 最后，记得返回刚才的页面
-    wx.navigateBack()
   }
-}
+})
 </script>
-
-<style>
-  .login{
-    padding-top: 50%;
-  }
-</style>

@@ -1,38 +1,36 @@
-import wepy from 'wepy'
-
-const host = __BASE_URL__
-
-const request = async (options, showLoading = true) => {
-  // 简化开发，如果传入字符串则转换成 对象
-  if (typeof options === 'string') {
-    options = {
-      url: options
-    }
-  }
-  // 显示加载中
-  if (showLoading) {
-    wepy.showLoading({title: '加载中'})
-  }
-  // 拼接请求地址
-  options.url = host + '/' + options.url
-  // 调用小程序的 request 方法
-  let response = await wepy.request(options)
-
-  if (showLoading) {
-    // 隐藏加载中
-    wepy.hideLoading()
-  }
-
-  // 服务器异常后给与提示
-  if (response.statusCode === 500) {
-    wepy.showModal({
-      title: '提示',
-      content: '服务器错误，请联系管理员或重试'
+export function request (method, optionUrl, data) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: optionUrl,
+      method: method,
+      data: data,
+      header: {
+        Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvc3RsLnl4Y3hpbi5jb21cL2FwaVwvdXNlclwvbG9naW4iLCJpYXQiOjE1NjU3MDIxMjUsImV4cCI6MTU2NTcwOTMyNSwibmJmIjoxNTY1NzAyMTI1LCJqdGkiOiJSMDFWUTV0RGIxUzRpRnp1Iiwic3ViIjo1MCwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.cxrVhV4ecZTeEi2vU0H6ro5GTpLTVn-RS_W3wzau8S0'
+      },
+      success: function (res) {
+        resolve(res)
+      },
+      fail: function (res) {
+        resolve(res)
+      }
     })
-  }
-  return response
+  })
+}
+
+export function login () {
+  return new Promise((resolve, reject) => {
+    wx.login({
+      success: function (res) {
+        resolve(res)
+      },
+      fail: function (res) {
+        resolve(res)
+      }
+    })
+  })
 }
 
 export default{
-  request
+  request,
+  login
 }

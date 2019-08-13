@@ -36,7 +36,7 @@
     <official-account></official-account>
     <view class="page__bd">
       <view class="weui-grids">
-        <repeat for="{{ categories }}" item="category" key="id">
+        <repeat v-for="category in categories">
           <navigator url="/pages/productList?category_id={{ category.online_id }}" class="weui-grid" hover-class="weui-grid_active">
             <image class="weui-grid__icon" src="{{ category.cover }}" />
             <view class="weui-grid__label">{{category.name}}</view>
@@ -50,30 +50,17 @@
 </template>
 
 <script>
-  import wepy from 'wepy'
-  import api from '@/utils/api'
+  import wepy from '@wepy/core'
+  import api from '@/utils/request'
 
-  export default class Category extends wepy.page {
-    config = {
-      navigationBarTitleText: '绿叶产品价格表'
-    }
-    data = {
+  wepy.page({
+    data: {
       categories: []
-    }
+    },
     async onLoad() {
-      try {
-        let response = await api.request('product_categories')
-        if (response.statusCode === 200) {
-          this.categories = response.data.data
-        }
-      } catch (e) {
-        wepy.showModal({
-          title: '提示',
-          content: '服务器错误，请联系管理员'
-        })
-      }
-      this.$apply()
-    }
+      let productCategories = await api.request('product_categories')
+      this.categories = productCategories.data
+    },
     onShareAppMessage (res) {
       return {
         // 标题是话题标题
@@ -90,5 +77,11 @@
         }
       }
     }
-  }
+  })
 </script>
+
+<config>
+  {
+    navigationBarTitleText: '绿叶产品价格表'
+  }
+</config>
