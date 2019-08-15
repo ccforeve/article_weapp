@@ -58,7 +58,11 @@
       categories: []
     },
     async onLoad() {
+      console.log(1111);
       let productCategories = await api.request('product_categories')
+      productCategories.data.forEach(function (value) {
+          value.cover = value.cover.replace(/\/\/img.lvye100.com/, 'http://img.lvye100.com')
+      })
       this.categories = productCategories.data
     },
     onShareAppMessage (res) {

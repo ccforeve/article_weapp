@@ -34,37 +34,7 @@ var global = {};
    return __wepy_require;
 })([
 /***** module 0 start *****/
-/***** C:\Users\Administrator\Code\article_weapp2\node_modules\wepy-async-function\index.js *****/
-function(module, exports, __wepy_require) {/**
- * Tencent is pleased to support the open source community by making WePY available.
- * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
- *
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
- */
-
-
-var g = __wepy_require(3);
-
-if (!g) {
-  console.warn('请确认关闭小程序选项 "关闭ES6转ES5"');
-} else {
-  if (!g.Promise) {
-    // IOS 10.0.1 may cause IOS crash.
-    g.Promise = __wepy_require(6);
-  }
-  if (!g.regeneratorRuntime) {
-    g.regeneratorRuntime = __wepy_require(5);
-  }
-}
-
-
-},/***** module 0 end *****/
-
-
-/***** module 1 start *****/
-/***** C:\Users\Administrator\Code\article_weapp2\node_modules\regenerator-runtime\runtime-module.js *****/
+/***** C:\Users\Administrator\Code\article_weapp\node_modules\regenerator-runtime\runtime-module.js *****/
 function(module, exports, __wepy_require) {/**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -87,7 +57,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __wepy_require(4);
+module.exports = __wepy_require(3);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -101,11 +71,41 @@ if (hadRuntime) {
   }
 }
 
+},/***** module 0 end *****/
+
+
+/***** module 1 start *****/
+/***** C:\Users\Administrator\Code\article_weapp\node_modules\wepy-async-function\index.js *****/
+function(module, exports, __wepy_require) {/**
+ * Tencent is pleased to support the open source community by making WePY available.
+ * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://opensource.org/licenses/MIT
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+
+
+var g = __wepy_require(4);
+
+if (!g) {
+  console.warn('请确认关闭小程序选项 "关闭ES6转ES5"');
+} else {
+  if (!g.Promise) {
+    // IOS 10.0.1 may cause IOS crash.
+    g.Promise = __wepy_require(6);
+  }
+  if (!g.regeneratorRuntime) {
+    g.regeneratorRuntime = __wepy_require(5);
+  }
+}
+
+
 },/***** module 1 end *****/
 
 
 /***** module 2 start *****/
-/***** C:\Users\Administrator\Code\article_weapp2\node_modules\@wepy\core\dist\wepy.js *****/
+/***** C:\Users\Administrator\Code\article_weapp\node_modules\@wepy\core\dist\wepy.js *****/
 function(module, exports, __wepy_require) {'use strict';
 
 // can we use __proto__?
@@ -2662,25 +2662,7 @@ module.exports = wepy;
 
 
 /***** module 3 start *****/
-/***** C:\Users\Administrator\Code\article_weapp2\node_modules\wepy-async-function\global.js *****/
-function(module, exports, __wepy_require) {/**
- * Tencent is pleased to support the open source community by making WePY available.
- * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
- *
- * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
- * http://opensource.org/licenses/MIT
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
- */
-
-
-var global = module.exports = typeof window !== 'undefined' && window.Math === Math
-  ? window : typeof self !== 'undefined' && self.Math === Math ? self : this || Function('return this')();
-
-},/***** module 3 end *****/
-
-
-/***** module 4 start *****/
-/***** C:\Users\Administrator\Code\article_weapp2\node_modules\regenerator-runtime\runtime.js *****/
+/***** C:\Users\Administrator\Code\article_weapp\node_modules\regenerator-runtime\runtime.js *****/
 function(module, exports, __wepy_require) {/**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -3409,11 +3391,29 @@ function(module, exports, __wepy_require) {/**
   (function() { return this })() || Function("return this")()
 );
 
+},/***** module 3 end *****/
+
+
+/***** module 4 start *****/
+/***** C:\Users\Administrator\Code\article_weapp\node_modules\wepy-async-function\global.js *****/
+function(module, exports, __wepy_require) {/**
+ * Tencent is pleased to support the open source community by making WePY available.
+ * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://opensource.org/licenses/MIT
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+
+
+var global = module.exports = typeof window !== 'undefined' && window.Math === Math
+  ? window : typeof self !== 'undefined' && self.Math === Math ? self : this || Function('return this')();
+
 },/***** module 4 end *****/
 
 
 /***** module 5 start *****/
-/***** C:\Users\Administrator\Code\article_weapp2\node_modules\wepy-async-function\node_modules\regenerator-runtime\runtime.js *****/
+/***** C:\Users\Administrator\Code\article_weapp\node_modules\wepy-async-function\node_modules\regenerator-runtime\runtime.js *****/
 function(module, exports, __wepy_require) {/**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -4155,7 +4155,7 @@ function(module, exports, __wepy_require) {/**
 
 
 /***** module 6 start *****/
-/***** C:\Users\Administrator\Code\article_weapp2\node_modules\wepy-async-function\node_modules\promise-polyfill\promise.js *****/
+/***** C:\Users\Administrator\Code\article_weapp\node_modules\wepy-async-function\node_modules\promise-polyfill\promise.js *****/
 function(module, exports, __wepy_require) {(function (root) {
 
   // Store setTimeout reference so promise-polyfill will be unaffected by

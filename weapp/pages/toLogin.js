@@ -1,6 +1,6 @@
 "use strict";
 
-var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(1));
+var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(0));
 
 var _core = _interopRequireDefault(require('../vendor.js')(2));
 
@@ -63,6 +63,48 @@ _core["default"].page({
     }()
   }
 }, {info: {"components":{},"on":{}}, handlers: {'14-0': {"getuserinfo": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.bindGetUserInfo($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'14-0': {"getuserinfo": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.bindGetUserInfo($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'14-0': {"getuserinfo": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.bindGetUserInfo($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'14-0': {"getuserinfo": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.bindGetUserInfo($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'14-0': {"getuserinfo": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.bindGetUserInfo($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'14-0': {"getuserinfo": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.bindGetUserInfo($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'14-0': {"getuserinfo": function proxy () {
     var $event = arguments[arguments.length - 1];
     var _vm=this;
       return (function () {

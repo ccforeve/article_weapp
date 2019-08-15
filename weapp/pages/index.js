@@ -1,6 +1,6 @@
 "use strict";
 
-var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(1));
+var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(0));
 
 var _core = _interopRequireDefault(require('../vendor.js')(2));
 
@@ -25,14 +25,18 @@ _core["default"].page({
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              console.log(1111);
+              _context.next = 3;
               return _request["default"].request('product_categories');
 
-            case 2:
+            case 3:
               productCategories = _context.sent;
+              productCategories.data.forEach(function (value) {
+                value.cover = value.cover.replace(/\/\/img.lvye100.com/, 'http://img.lvye100.com');
+              });
               this.categories = productCategories.data;
 
-            case 4:
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -62,4 +66,4 @@ _core["default"].page({
       }
     };
   }
-}, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} });
+}, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} });

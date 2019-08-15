@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(1));
+var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(0));
 
 var _api = _interopRequireDefault(require('api.js'));
 
@@ -22,33 +22,35 @@ var request =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  _regeneratorRuntime2["default"].mark(function _callee(url) {
-    var method,
-        data,
-        showLoading,
-        optionUrl,
+  _regeneratorRuntime2["default"].mark(function _callee(options) {
+    var showLoading,
         response,
         _args = arguments;
     return _regeneratorRuntime2["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            method = _args.length > 1 && _args[1] !== undefined ? _args[1] : 'get';
-            data = _args.length > 2 && _args[2] !== undefined ? _args[2] : [];
-            showLoading = _args.length > 3 && _args[3] !== undefined ? _args[3] : true;
-            optionUrl = host + url; // 显示加载中
+            showLoading = _args.length > 1 && _args[1] !== undefined ? _args[1] : true;
+
+            if (typeof options === 'string') {
+              options = {
+                url: options
+              };
+            } // 显示加载中
+
 
             if (showLoading) {
               wx.showLoading({
                 title: '加载中'
               });
-            } // 调用小程序的 request 方法
+            }
 
+            options.url = host + options.url; // 调用小程序的 request 方法
 
-            _context.next = 7;
-            return _api["default"].request(method, optionUrl, data);
+            _context.next = 6;
+            return _api["default"].request(options);
 
-          case 7:
+          case 6:
             response = _context.sent;
 
             if (showLoading) {
@@ -61,12 +63,12 @@ function () {
               wx.showModal({
                 title: '提示',
                 content: '服务器错误，请联系管理员或重试'
-              }); // return false
+              });
             }
 
             return _context.abrupt("return", response.data);
 
-          case 11:
+          case 10:
           case "end":
             return _context.stop();
         }
@@ -77,9 +79,51 @@ function () {
   return function request(_x) {
     return _ref.apply(this, arguments);
   };
+}(); // 刷新token
+
+
+var refreshToken =
+/*#__PURE__*/
+function () {
+  var _ref2 = _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime2["default"].mark(function _callee2(accessToken) {
+    var options, refreshResponse;
+    return _regeneratorRuntime2["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            options = {
+              url: host + 'authorizations/current',
+              method: 'PUT',
+              header: {
+                'Authorization': accessToken
+              }
+            };
+            _context2.next = 3;
+            return _api["default"].request(options);
+
+          case 3:
+            refreshResponse = _context2.sent;
+            // 将 Token 及过期时间保存在 storage 中
+            wx.setStorageSync('access_token', refreshResponse.data.access_token);
+            wx.setStorageSync('access_token_expired_at', new Date().getTime() + refreshResponse.data.expires_in * 1000);
+
+          case 6:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function refreshToken(_x2) {
+    return _ref2.apply(this, arguments);
+  };
 }();
 
 var _default = {
-  request: request
+  request: request,
+  refreshToken: refreshToken
 };
 exports["default"] = _default;

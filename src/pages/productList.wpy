@@ -112,8 +112,12 @@
         if (!this.option.page) {
           this.option.page = 1
         }
+        let operations = {
+          url: 'products/' + this.category_id + '/category',
+          data: this.option
+        }
         try {
-          let productResponse = await api.request('products/' + this.category_id + '/category', 'get', this.option)
+          let productResponse = await api.request(operations)
           this.title = productResponse.category.name
           wx.setNavigationBarTitle({
             title: productResponse.category.name

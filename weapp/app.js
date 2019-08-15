@@ -1,10 +1,10 @@
 "use strict";
 
-var _regeneratorRuntime2 = _interopRequireDefault(require('vendor.js')(1));
+var _regeneratorRuntime2 = _interopRequireDefault(require('vendor.js')(0));
 
 var _core = _interopRequireDefault(require('vendor.js')(2));
 
-require('vendor.js')(0);
+require('vendor.js')(1);
 
 var _api = _interopRequireDefault(require('utils/api.js'));
 
@@ -87,10 +87,12 @@ _core["default"].app({
                     var user = res;
                     user.session_key = session; // 接下来写业务代码
 
-                    var url = 'miniprogram/user/check_user';
-                    var data = user;
+                    var options = {
+                      url: 'miniprogram/user/check_user',
+                      data: user
+                    };
 
-                    _request["default"].request(url, 'get', data).then(function (res) {
+                    _request["default"].request(options).then(function (res) {
                       if (res.code === 200) {
                         // 缓存用户id
                         _wx.setStorageSync('user_id', res.user_id);
@@ -128,4 +130,4 @@ _core["default"].app({
       return getUser;
     }()
   }
-}, {a: 1}, {a: 1});
+}, {a: 1}, {a: 1}, {a: 1}, {a: 1}, {a: 1}, {a: 1}, {a: 1}, {a: 1});

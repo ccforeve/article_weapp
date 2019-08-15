@@ -1,6 +1,6 @@
 "use strict";
 
-var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(1));
+var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(0));
 
 var _core = _interopRequireDefault(require('../vendor.js')(2));
 
@@ -32,6 +32,7 @@ _core["default"].page({
       /*#__PURE__*/
       _regeneratorRuntime2["default"].mark(function _callee() {
         var reset,
+            operations,
             productResponse,
             products,
             _args = arguments;
@@ -45,11 +46,15 @@ _core["default"].page({
                   this.option.page = 1;
                 }
 
-                _context.prev = 2;
-                _context.next = 5;
-                return _request["default"].request('products/' + this.category_id + '/category', 'get', this.option);
+                operations = {
+                  url: 'products/' + this.category_id + '/category',
+                  data: this.option
+                };
+                _context.prev = 3;
+                _context.next = 6;
+                return _request["default"].request(operations);
 
-              case 5:
+              case 6:
                 productResponse = _context.sent;
                 this.title = productResponse.category.name;
                 wx.setNavigationBarTitle({
@@ -95,23 +100,23 @@ _core["default"].page({
                 }
 
                 this.total = productResponse.products.total;
-                _context.next = 18;
+                _context.next = 19;
                 break;
 
-              case 15:
-                _context.prev = 15;
-                _context.t0 = _context["catch"](2);
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](3);
                 wx.showModal({
                   title: '提示',
                   content: '服务器错误，请联系管理员'
                 });
 
-              case 18:
+              case 19:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[2, 15]]);
+        }, _callee, this, [[3, 16]]);
       }));
 
       function getProducts() {
@@ -288,6 +293,48 @@ _core["default"].page({
     };
   }
 }, {info: {"components":{},"on":{}}, handlers: {'11-0': {"tap": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.collection($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'11-0': {"tap": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.collection($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'11-0': {"tap": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.collection($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'11-0': {"tap": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.collection($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'11-0': {"tap": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.collection($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'11-0': {"tap": function proxy () {
+    var $event = arguments[arguments.length - 1];
+    var _vm=this;
+      return (function () {
+        _vm.collection($event)
+      })();
+    
+  }}}, models: {} }, {info: {"components":{},"on":{}}, handlers: {'11-0': {"tap": function proxy () {
     var $event = arguments[arguments.length - 1];
     var _vm=this;
       return (function () {

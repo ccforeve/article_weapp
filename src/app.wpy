@@ -68,9 +68,11 @@ wepy.app({
           var user = res
           user.session_key = session
           // 接下来写业务代码
-          let url = 'miniprogram/user/check_user'
-          let data = user
-          curl.request(url, 'get', data).then(function (res) {
+          let options = {
+            url: 'miniprogram/user/check_user',
+            data: user
+          }
+          curl.request(options).then(function (res) {
             if (res.code === 200) {
               // 缓存用户id
               _wx.setStorageSync('user_id', res.user_id)
@@ -103,7 +105,7 @@ wepy.app({
       'pages/detail',
       'pages/pay',
       'pages/toLogin',
-      'pages/collection',
+      'pages/collector',
       'pages/collectionList',
       'pages/collectionShare'
     ],
@@ -120,7 +122,7 @@ wepy.app({
         iconPath: 'images/home.png',
         selectedIconPath: 'images/home_select.png'
       }, {
-        pagePath: 'pages/collection',
+        pagePath: 'pages/collector',
         text: '收藏',
         iconPath: 'images/dir.png',
         selectedIconPath: 'images/dir_select.png'

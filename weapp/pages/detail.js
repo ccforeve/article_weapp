@@ -1,6 +1,6 @@
 "use strict";
 
-var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(1));
+var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(0));
 
 var _core = _interopRequireDefault(require('../vendor.js')(2));
 
@@ -131,4 +131,4 @@ _core["default"].page({
       }
     };
   }
-}, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} });
+}, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} });

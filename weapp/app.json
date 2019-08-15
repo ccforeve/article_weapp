@@ -5,7 +5,7 @@
         "pages/detail",
         "pages/pay",
         "pages/toLogin",
-        "pages/collection",
+        "pages/collector",
         "pages/collectionList",
         "pages/collectionShare"
     ],
@@ -24,7 +24,7 @@
                 "selectedIconPath": "images/home_select.png"
             },
             {
-                "pagePath": "pages/collection",
+                "pagePath": "pages/collector",
                 "text": "收藏",
                 "iconPath": "images/dir.png",
                 "selectedIconPath": "images/dir_select.png"

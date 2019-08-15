@@ -1,6 +1,6 @@
 "use strict";
 
-var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(1));
+var _regeneratorRuntime2 = _interopRequireDefault(require('../vendor.js')(0));
 
 var _core = _interopRequireDefault(require('../vendor.js')(2));
 
@@ -14,7 +14,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 _core["default"].page({
   data: {
-    collectors: []
+    collectors: {}
   },
   onLoad: function () {
     var _onLoad = _asyncToGenerator(
@@ -42,10 +42,15 @@ _core["default"].page({
               return _context.abrupt("return", false);
 
             case 5:
-              _context.next = 7;
+              if (!wx.getStorageSync('Authorize')) {
+                _context.next = 8;
+                break;
+              }
+
+              _context.next = 8;
               return this.getCollections();
 
-            case 7:
+            case 8:
             case "end":
               return _context.stop();
           }
@@ -70,14 +75,13 @@ _core["default"].page({
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _request["default"].request('collector', 'get');
+                return _request["default"].request('collector');
 
               case 2:
                 collectorList = _context2.sent;
                 this.collectors = collectorList.data;
-                console.log(collectorList.data);
 
-              case 5:
+              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -92,4 +96,4 @@ _core["default"].page({
       return getCollections;
     }()
   }
-}, {info: {"components":{},"on":{}}, handlers: {}, models: {} });
+}, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} }, {info: {"components":{},"on":{}}, handlers: {}, models: {} });
