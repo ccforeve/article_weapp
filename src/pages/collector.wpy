@@ -105,13 +105,11 @@
         wx.navigateTo({url: '/pages/toLogin'})
         return false
       }
-      if (wx.getStorageSync('Authorize')) {
-          await this.getCollections()
-      }
+      await this.getCollections()
     },
     methods: {
       async getCollections () {
-        let collectorList = await api.request('collector')
+        let collectorList = await api.authRequest('collector')
         this.collectors = collectorList.data
       }
     }

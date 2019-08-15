@@ -46,16 +46,14 @@ const login = async (params = {}) => {
 
   // 接口请求 weapp/authorizations
   let authResponse = await request({
-    url: 'weapp/authorizations',
+    url: 'miniprogram/user/login',
     data: params,
     method: 'POST'
   })
 
   // 登录成功，记录 token 信息
-  if (authResponse.statusCode === 201) {
-    wx.setStorageSync('access_token', authResponse.data.access_token)
-    wx.setStorageSync('access_token_expired_at', new Date().getTime() + authResponse.data.expires_in * 1000)
-  }
+  wx.setStorageSync('access_token', authResponse.access_token)
+  wx.setStorageSync('access_token_expired_at', new Date().getTime() + authResponse.expires_in * 1000)
 
   return authResponse
 }
@@ -63,36 +61,35 @@ const login = async (params = {}) => {
 // 刷新token
 const refreshToken = async (accessToken) => {
   let options = {
-    url: host + 'authorizations/current',
+    url: 'authorizations/refresh_token',
     method: 'PUT',
     header: {
       'Authorization': accessToken
     }
   }
-  let refreshResponse = await api.request(options)
-  // 将 Token 及过期时间保存在 storage 中
-  wx.setStorageSync('access_token', refreshResponse.data.access_token)
-  wx.setStorageSync('access_token_expired_at', new Date().getTime() + refreshResponse.expires_in * 1000)
+  let refreshResponse = await request(options, false)
+  return refreshResponse
 }
 
 // 获取token
 const getToken = async () => {
   // 从缓存中取出token
   let accessToken = wx.getStorageSync('access_token')
-  let expired_at = wx.getStorageSync('access_token_expired_at')
+  let expiredAt = wx.getStorageSync('access_token_expired_at')
 
   // 如果token过期了，则调用刷新方法
-  if (accessToken && new Date().getTime() > expired_at) {
+  if (accessToken && new Date().getTime() > expiredAt) {
     let refreshResponse = await refreshToken(accessToken)
     // 刷新成功
     if (refreshResponse.statusCode === 200) {
       accessToken = refreshResponse.data.access_token
+      // 将 Token 及过期时间保存在 storage 中
+      wx.setStorageSync('access_token', accessToken)
+      wx.setStorageSync('access_token_expired_at', new Date().getTime() + refreshResponse.data.expires_in * 1000)
     } else {
       // 刷新失败了，重新调用登录方法，设置 Token
       let authResponse = await login()
-      if (authResponse.statusCode === 201) {
-        accessToken = authResponse.data.access_token
-      }
+      accessToken = authResponse.access_token
     }
   }
 
@@ -103,7 +100,7 @@ const getToken = async () => {
 const authRequest = async (options, showLoading = true) => {
   if (typeof options === 'string') {
     options = {
-      url: host + options
+      url: options
     }
   }
   // 显示加载中
@@ -136,5 +133,8 @@ const authRequest = async (options, showLoading = true) => {
 
 export default{
   request,
-  refreshToken
+  login,
+  refreshToken,
+  getToken,
+  authRequest
 }

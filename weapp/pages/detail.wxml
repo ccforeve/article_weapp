@@ -1,3 +1,0 @@
-
-  <web-view wx:if="{{ is_show }}" src="https://btl.yxcxin.com/{{ webUrl }}"></web-view>
-
