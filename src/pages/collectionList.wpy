@@ -7,11 +7,11 @@
 }
 @font-face {
   font-family: 'iconfont';  /* project id 1345172 */
-  src: url('//at.alicdn.com/t/font_1345172_knr4cta7ob.eot');
-  src: url('//at.alicdn.com/t/font_1345172_knr4cta7ob.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1345172_knr4cta7ob.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1345172_knr4cta7ob.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1345172_knr4cta7ob.ttf') format('truetype'),
+  src: url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.eot');
+  src: url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.eot?#iefix') format('embedded-opentype'),
+  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.woff2') format('woff2'),
+  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.woff') format('woff'),
+  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.ttf') format('truetype'),
   url('//at.alicdn.com/t/font_1345172_knr4cta7ob.svg#iconfont') format('svg');
 }
 .iconfont {
@@ -252,10 +252,10 @@
   <view>
     <view class="collection">
       <view class="headTitle">
-        <text>收藏夹1</text>
+        <text>{{ collector.title }}</text>
       </view>
       <view class="desc">
-        <span>这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111</span>
+        <span>{{ collector.desc }}</span>
       </view>
       <view class="operation">
         <text class="iconfont icon-show">描述</text>
@@ -318,3 +318,45 @@
     </view>
   </view>
 </template>
+
+<script>
+  import wepy from '@wepy/core'
+  import api from '@/utils/request'
+  import store from '../store'
+  import { mapState } from '@wepy/x'
+
+  wepy.page({
+    store,
+    data: {
+      collector: {},
+      collections: {}
+    },
+    async onLoad(query) {
+      let collectorId = query.collector_id
+      await this.getCollections(collectorId)
+      this.getCollector(collectorId)
+    },
+    computed: mapState([ 'collectorListVuex' ]),
+    methods: {
+      async getCollections(collectorId) {
+        this.collections = await api.authRequest({
+          url: 'collections',
+          methods: 'GET',
+          data: {
+            collector_id: collectorId
+          }
+        })
+      },
+      getCollector (collectorId) {
+        let collector = this.collectorListVuex
+        console.log(collector)
+        collector.find(function (value, index) {
+          if (value.id === collectorId) {
+            return value
+          }
+        })
+        this.collector = collector
+      }
+    }
+  })
+</script>

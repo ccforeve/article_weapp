@@ -7,13 +7,13 @@
   }
   @font-face {
     font-family: 'iconfont'; /* project id 1314494 */
-    src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot');
-    src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot?#iefix')
+    src: url('https://at.alicdn.com/t/font_1314494_u4ctf32onxf.eot');
+    src: url('https://at.alicdn.com/t/font_1314494_u4ctf32onxf.eot?#iefix')
     format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.svg#iconfont') format('svg');
+    url('https://at.alicdn.com/t/font_1314494_u4ctf32onxf.woff2') format('woff2'),
+    url('https://at.alicdn.com/t/font_1314494_u4ctf32onxf.woff') format('woff'),
+    url('https://at.alicdn.com/t/font_1314494_u4ctf32onxf.ttf') format('truetype'),
+    url('https://at.alicdn.com/t/font_1314494_u4ctf32onxf.svg#iconfont') format('svg');
   }
   .iconfont {
     font-family: 'iconfont' !important;
@@ -63,6 +63,9 @@
   .bRight {
     float: right;
   }
+  .bRight.created-at {
+    font-size: 12px;
+  }
   .prdMess {
     width: 72%;
     display: inline-block;
@@ -74,16 +77,16 @@
 <template>
   <view class="collection">
     <view class="headTitle">
-      <i class="iconfont icon_collection">王玉良的收藏夹</i>
+      <i class="iconfont icon_collection">收藏夹</i>
     </view>
     <!-- 收藏列表 -->
     <view class="list">
-      <navigator url="/pages/collectionList" class="prodBox" v-for="collector in collectors">
+      <navigator url="/pages/collectionList?collector_id={{ collector.id }}" class="prodBox" v-for="collector in collectors">
         <view class="boxHead">
           <span class="prdTitle">{{ collector.title }}</span><span class="bRight">{{ collector.collections_count }}个</span>
         </view>
         <view>
-          <span class="prdMess">{{ collector.desc }}</span><span class="bRight">{{ collector.created_at }}</span>
+          <span class="prdMess">{{ collector.desc }}</span><span class="bRight created-at">{{ collector.created_at }}</span>
         </view>
       </navigator>
     </view>
@@ -93,8 +96,11 @@
 <script>
   import wepy from '@wepy/core'
   import api from '@/utils/request'
+  import store from '../store'
+  import { mapState } from '@wepy/x'
 
   wepy.page({
+    store,
     data: {
       collectors: {}
     },
@@ -105,20 +111,42 @@
         wx.navigateTo({url: '/pages/toLogin'})
         return false
       }
-      await this.getCollections()
+      if (this.collectorListVuex.length <= 0) {
+        await this.getCollections()
+      } else {
+        this.collectors = this.collectorHandle(this.collectorList)
+      }
     },
+    computed: mapState([ 'collectorListVuex' ]),
     methods: {
       async getCollections () {
-        let collectorList = await api.authRequest('collector')
-        this.collectors = collectorList.data
+        let collectorList = await api.authRequest('collectors')
+        this.collectors = this.collectorHandle(collectorList.data)
+        // 缓存收藏夹列表
+        store.commit('collectorStore', collectorList.data)
+      },
+      // 处理列表数据
+      collectorHandle (collectors) {
+        collectors.forEach(function (value) {
+          if (value.desc.length > 26) {
+            value.desc = value.desc.substr(0, 26) + '...'
+          }
+          if (value.title.length > 14) {
+            value.title = value.title.substr(0, 14) + '...'
+          }
+        })
+        return collectors
       }
     }
   })
 </script>
 
 <config>
-  {
+{
   enablePullDownRefresh: true,
-  navigationBarTitleText: '收藏夹'
+  navigationBarTitleText: '收藏夹',
+  usingComponents: {
+    counter: '~counter'
   }
+}
 </config>

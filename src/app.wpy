@@ -35,6 +35,9 @@
 import wepy from '@wepy/core'
 import 'wepy-async-function'
 import curl from '@/utils/request'
+import vuex from '@wepy/x'
+
+wepy.use(vuex)
 
 wepy.app({
   data: {

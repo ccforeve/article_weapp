@@ -38,7 +38,8 @@
       <view class="weui-grids">
         <repeat v-for="category in categories">
           <navigator url="/pages/productList?category_id={{ category.online_id }}" class="weui-grid" hover-class="weui-grid_active">
-            <image class="weui-grid__icon" src="{{ category.cover }}" />
+            <!---{{ category.cover }}--->
+            <image class="weui-grid__icon" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565930813894&di=6c6deea71bff4c273736bf6022c7de13&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201508%2F28%2F20150828225753_jJ4Fc.jpeg" />
             <view class="weui-grid__label">{{category.name}}</view>
             <view class="label-text">({{ category.products_count }}种)</view>
           </navigator>
@@ -58,11 +59,7 @@
       categories: []
     },
     async onLoad() {
-      console.log(1111);
       let productCategories = await api.request('product_categories')
-      productCategories.data.forEach(function (value) {
-          value.cover = value.cover.replace(/\/\/img.lvye100.com/, 'http://img.lvye100.com')
-      })
       this.categories = productCategories.data
     },
     onShareAppMessage (res) {

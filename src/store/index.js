@@ -1,28 +1,21 @@
-import Vuex from '@wepy/x';
+import Vuex from '@wepy/x'
 
 export default new Vuex.Store({
   state: {
-    counter: 0
+    collectorListVuex: []
   },
   mutations: {
-    increment (state) {
-      state.counter++;
-    },
-    decrement (state) {
-      state.counter--;
+    collectorStore (state, collectors) {
+      // 添加收藏夹列表
+      state.collectorList = collectors
     }
   },
   actions: {
     increment ({ commit }) {
-      commit('increment');
+      commit('increment')
     },
     decrement ({ commit }) {
-      commit('decrement');
-    },
-    incrementAsync ({ commit }) {
-      setTimeout(() => {
-        commit('increment');
-      }, 1000);
+      commit('decrement')
     }
   }
-});
+})

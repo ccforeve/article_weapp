@@ -51,7 +51,8 @@ const login = async (params = {}) => {
     method: 'POST'
   })
 
-  // 登录成功，记录 token 信息
+  // 登录成功，记录 token 信息及用户信息
+  wx.setStorageSync('user', authResponse.user)
   wx.setStorageSync('access_token', authResponse.access_token)
   wx.setStorageSync('access_token_expired_at', new Date().getTime() + authResponse.expires_in * 1000)
 
