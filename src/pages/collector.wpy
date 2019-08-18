@@ -114,16 +114,16 @@
       if (this.collectorListVuex.length <= 0) {
         await this.getCollections()
       } else {
-        this.collectors = this.collectorHandle(this.collectorList)
+        this.collectors = this.collectorHandle(this.collectorListVuex)
       }
     },
     computed: mapState([ 'collectorListVuex' ]),
     methods: {
       async getCollections () {
         let collectorList = await api.authRequest('collectors')
-        this.collectors = this.collectorHandle(collectorList.data)
         // 缓存收藏夹列表
-        store.commit('collectorStore', collectorList.data)
+        store.commit('collectorStore', JSON.parse(JSON.stringify(collectorList.data)))
+        this.collectors = this.collectorHandle(collectorList.data)
       },
       // 处理列表数据
       collectorHandle (collectors) {

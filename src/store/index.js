@@ -7,7 +7,7 @@ export default new Vuex.Store({
   mutations: {
     collectorStore (state, collectors) {
       // 添加收藏夹列表
-      state.collectorList = collectors
+      state.collectorListVuex = collectors
     }
   },
   actions: {

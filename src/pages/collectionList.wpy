@@ -23,41 +23,40 @@
   -moz-osx-font-smoothing: grayscale;
 }
 .icon-show::before {
-    content: "\e621";
+  content: "\e621";
 }
 .icon-edit::before {
-    content: "\e622";
+  content: "\e622";
 }
 .icon-delete::before {
-    content: "\e600";
+  content: "\e600";
 }
 .icon-iconDel::before {
-    content: "\e607";
+  content: "\e607";
 }
 .icon-delTip::before {
-    content: "\e60c";
+  content: "\e60c";
 }
 .iconDel {
   font-size: 18px;
   position: absolute;
   right: 0.5%;
-  top: 30%;
+  top: 23%;
   color: red;
 }
 .headTitle {
-  width: 200px;
-  height: 24px;
+  /*width: 200px;*/
+  /*height: 24px;*/
   color: rgba(16, 16, 16, 1);
   font-size: 18px;
   text-align: left;
   padding-bottom: 8px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  /*overflow: hidden;*/
+  /*white-space: nowrap;*/
+  /*text-overflow: ellipsis;*/
 }
 .desc {
   width: 100%;
-  height: 37px;
   color: rgba(119, 119, 119, 1);
   font-size: 12px;
   border-bottom: 1px dashed rgba(187, 187, 187, 1);
@@ -76,7 +75,7 @@
   border-bottom: 1px solid rgba(187, 187, 187, 1);
 }
 .operation text:nth-child(2) {
-  margin: 0 12px;
+  margin: 0 0 0 12px;
 }
 .prodBox {
   padding: 18px 0 40px;
@@ -181,7 +180,6 @@
   left: 17.5%;
   text-align: center;
   z-index: 10;
-  display: none;
 }
 .delTip {
   font-size: 60px;
@@ -212,7 +210,6 @@
   top: 0;
   background: #555555;
   opacity: 0.7;
-  display: none;
 }
 .descBox {
   position: fixed;
@@ -225,7 +222,6 @@
   text-align: center;
   z-index: 10;
   font-size: 12px;
-  display: none;
 }
 .descMess span{
   padding: 10px 10px 15px 10px;
@@ -258,36 +254,34 @@
         <span>{{ collector.desc }}</span>
       </view>
       <view class="operation">
-        <text class="iconfont icon-show">描述</text>
-        <text class="iconfont icon-edit">编辑</text>
-        <text class="iconfont icon-delete">删除</text>
+<!--        <text class="iconfont icon-show">描述</text>-->
+        <navigator url="/pages/collectorEdit" class="iconfont icon-edit" style="display: initial !important;">编辑</navigator>
+        <text class="iconfont icon-delete" @tap="delCollectorHandle('show')">删除</text>
       </view>
       <!-- 产品列表 -->
-      <view class="prodList">
+      <view class="prodList" v-for="collection in collections">
         <view class="prodBox">
           <view class="prodImg">
             <img src="http://img.lvye100.com/pxs/BMLQhHX7ImMzUuSY.png" alt="" class="image">
           </view>
           <view class="prodMess">
-            <text class="prodTitle">[预]卡利斯1Kg蜜桃美肌沐浴露</text>
-            <text class="prodTitle">零售:34.90元, 会员:19.90元+15.00券</text>
+            <text class="prodTitle">{{ collection.product.name }}</text>
+            <text class="prodTitle">{{ collection.product.desc }}</text>
           </view>
           <view class="prodFoot">
-            <text>
-              <text class="add">+</text>
-              <text class="prodNum">4</text>
-              <text class="rud">-</text>
-            </text>
-            <text class="unit">单位: 瓶</text>
+            <text class="rud" @tap="subNum(collection.id)">-</text>
+            <text class="prodNum">{{ quantity[collection.id] }}</text>
+            <text class="add" @tap="addNum(collection.id)">+</text>
+            <text class="unit">单位: {{ collection.product.min_unit }}</text>
           </view>
-          <text class=" iconfont iconDel icon-iconDel"></text>
+          <text class=" iconfont iconDel icon-iconDel" @tap="delCollectionHandle('show')"></text>
         </view>
       </view>
     </view>
     <!-- 确认数量footer -->
     <view class="numFooter">
       <view class="price">
-        <text>总数量：<text>7</text></text>
+        <text>总数量：<text>{{ footer.totalQuantity }}</text></text>
         <text class="prodTitle">零售:34.90元, 会员:19.90元+15.00券</text>
       </view>
       <view class="priceBtn">
@@ -295,27 +289,37 @@
       </view>
     </view>
     <!-- 删除弹窗 -->
-    <view class="mark"></view>
-    <view class="fidDalog">
+    <view class="mark" v-if="delShow"></view>
+    <view class="fidDalog" v-if="delCollectorShow">
       <view>
         <text class=" iconfont delTip icon-delTip"></text>
       </view>
-      <view>你确定要删除此内容么</view>
+      <view>你确定要删除此收藏夹吗？</view>
       <view>
-        <text class="yesBtn">确定</text>
-        <text class="noBtn">取消</text>
+        <text class="yesBtn" @tap="delCollectorHandle('del')">确定</text>
+        <text class="noBtn" @tap="delCollectorHandle('show')">取消</text>
       </view>
     </view>
+    <view class="fidDalog" v-if="delCollectionShow">
+      <view>
+        <text class=" iconfont delTip icon-delTip"></text>
+      </view>
+        <view>你确定要删除此产品吗？</view>
+          <view>
+            <text class="yesBtn" @tap="delCollectionHandle('del')">确定</text>
+            <text class="noBtn" @tap="delCollectionHandle('show')">取消</text>
+          </view>
+      </view>
     <!-- 描述 -->
-    <view class="descBox">
-      <view class="descMess">
-        <text>
-          这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111
-        这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111
-        </text>
-      </view>
-      <view class="messTrue">知道了</view>
-    </view>
+<!--    <view class="descBox">-->
+<!--      <view class="descMess">-->
+<!--        <text>-->
+<!--          这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111-->
+<!--        这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111-->
+<!--        </text>-->
+<!--      </view>-->
+<!--      <view class="messTrue">知道了</view>-->
+<!--    </view>-->
   </view>
 </template>
 
@@ -329,12 +333,28 @@
     store,
     data: {
       collector: {},
-      collections: {}
+      collections: {},
+      delShow: false,
+      delCollectorShow: false,
+      delCollectionShow: false,
+      list: {
+        quantity: {},
+        fee: {},
+        memberFee: {},
+        volume: {}
+      },
+      footer: {
+        totalQuantity: 0,
+        totalFee: 0,
+        totalMemberFee: 0,
+        totalVolume: 0
+      }
     },
     async onLoad(query) {
       let collectorId = query.collector_id
       await this.getCollections(collectorId)
       this.getCollector(collectorId)
+      this.totalNumHandle()
     },
     computed: mapState([ 'collectorListVuex' ]),
     methods: {
@@ -346,16 +366,98 @@
             collector_id: collectorId
           }
         })
+        let quantity = {}
+        let fee = {}
+        let memberFee = {}
+        let volume = {}
+        this.collections.forEach(function (collection) {
+          // 数量
+          quantity[collection.id] = collection.quantity
+          // 价格
+          fee[collection.id] = collection.price
+          // 会员价
+          memberFee[collection.id] = collection.money
+          // 卷
+          volume[collection.id] = collection.ticket
+          // 处理产品数据
+          let product = collection.product
+          let cover = product.cover
+          if (cover.indexOf('//img.lvye100.com') >= 0) {
+            product.cover = cover.replace(
+              '//img.lvye100.com/p/',
+              'http://img.lvye100.com/pxs/'
+            )
+          }
+          product.desc = `零售：${product.price}元，会员：${product.money}元 + ${product.ticket}券`
+          if (product.kind === 1) {
+            if (product.price === product.money) {
+              product.desc = `会员价：${product.money}元`
+            } else {
+              product.desc = `零售：${product.price}元，会员价：${product.money}元`
+            }
+          }
+          if (product.kind === 1) {
+            product.name = '[复]' + product.name
+            product.text_color = 'fu'
+          } else if (product.kind === 2) {
+            product.name = '[报]' + product.name
+            product.text_color = 'bao'
+          } else if (product.kind === 3) {
+            product.name = '[预]' + product.name
+            product.text_color = 'yu'
+          } else if (product.state === 0) {
+            product.name = '[停]' + product.name
+            product.text_color = 'ting'
+          }
+        })
+        this.list.quantity = quantity
       },
       getCollector (collectorId) {
         let collector = this.collectorListVuex
-        console.log(collector)
-        collector.find(function (value, index) {
-          if (value.id === collectorId) {
+        this.collector = collector.find(function (value) {
+          if (value.id == collectorId) {
             return value
           }
         })
-        this.collector = collector
+        wx.setNavigationBarTitle({
+          title: this.collector.title
+        })
+      },
+      delCollectorHandle (option) {
+        if (option === 'show') {
+          this.delShow = !this.delShow
+          this.delCollectorShow = !this.delCollectorShow
+        }
+      },
+      delCollectionHandle (option) {
+        if (option === 'show') {
+          this.delShow = !this.delShow
+          this.delCollectionShow = !this.delCollectionShow
+        }
+      },
+      addNum (id) {
+        this.quantity[id] ++
+        this.totalNumHandle()
+      },
+      subNum (id) {
+        if (this.quantity[id] == 1) {
+          wx.showToast({title: '数量不能等于小于0', icon: 'none'})
+          return false
+        }
+        this.quantity[id] --
+        this.totalNumHandle()
+      },
+      // 统计总数量
+      totalNumHandle () {
+        let total = 0
+        Object.values(this.quantity).forEach(function (value) {
+          total += Number(value)
+        })
+        this.footer.totalQuantity = total
+      },
+      // 统计总价钱
+      totalFeeHandle () {
+        console.log('总价')
       }
     }
   })
