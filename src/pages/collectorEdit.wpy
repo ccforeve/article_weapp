@@ -29,7 +29,7 @@
                 <view class="weui-cell weui-cell_switch">
                     <view class="weui-cell__bd">显示会员价</view>
                     <view class="weui-cell__ft">
-                        <switch checked v-model="collector.showMember"></switch>
+                        <switch checked v-model="collector.show_member"></switch>
                     </view>
                 </view>
             </view>
@@ -45,6 +45,7 @@
   import wepy from '@wepy/core'
   import store from '../store'
   import { mapState } from '@wepy/x'
+  import api from '@/utils/request'
 
   wepy.page({
     store,
@@ -53,13 +54,15 @@
         title: false,
         tipsFlag: false
       },
+      collector_id: null,
       collector: {
         title: '',
         desc: '',
-        showMember: true
+        show_member: true
       }
     },
     onLoad (query) {
+      this.collector_id = query.collector_id
       this.getCollector(query.collector_id)
     },
     computed: mapState([ 'collectorListVuex' ]),
@@ -73,26 +76,48 @@
         })
         this.collector.title = collector.title
         this.collector.desc = collector.desc
-        this.collector.showMember = collector.show_member
+        this.collector.show_member = collector.show_member
         wx.setNavigationBarTitle({
           title: '编辑' + collector.title
         })
       },
       submit () {
         let collector = this.collector
-        if (collector.title.length <= 0) {
+        if (collector.title.length <= 0 && collector.title.length > 32) {
           this.fail.title = true
           this.showTipsFlag()
           return false
         }
-        wx.navigateBack()
-        console.log(collector)
+        // 编辑操作
+        this.updateCollector()
       },
       showTipsFlag () {
         this.fail.tipsFlag = true
         setTimeout(() => {
           this.fail.tipsFlag = false
         }, 2000)
+      },
+      async updateCollector () {
+        let updateResponse = await api.authRequest({
+          url: 'collectors/' + this.collector_id,
+          method: 'PUT',
+          data: this.collector
+        })
+        // 提交的数据有误
+        if (updateResponse.errors) {
+          this.showTipsFlag()
+          return false
+        }
+        // 更新vuex collectorList数据
+        let _this = this
+        this.collectorListVuex.forEach(value => {
+          if (_this.collector_id == value.id) {
+            value.title = _this.collector.title
+            value.desc = _this.collector.desc
+            value.show_member = _this.collector.show_member
+          }
+        })
+        wx.navigateTo({url: '/pages/collectionList?collector_id=' + this.collector_id})
       }
     }
   })

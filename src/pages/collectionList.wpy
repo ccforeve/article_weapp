@@ -341,6 +341,7 @@
   wepy.page({
     store,
     data: {
+      collector_id: null,
       collector: {},
       collections: {},
       delShow: false,
@@ -360,20 +361,22 @@
       }
     },
     async onLoad(query) {
-      let collectorId = query.collector_id
-      await this.getCollections(collectorId)
-      this.getCollector(collectorId)
+      this.collector_id = query.collector_id
+      await this.getCollections(this.collector_id)
       this.totalNumHandle()   // 统计数量
       this.totalFeeHandle()   // 统计总价
       this.totalMemberFeeHandle()   // 统计会员价
       this.totalVolumeHandle()   // 统计优惠劵
+    },
+    onShow() {
+      this.getCollector(this.collector_id)
     },
     computed: mapState([ 'collectorListVuex' ]),
     methods: {
       async getCollections(collectorId) {
         this.collections = await api.authRequest({
           url: 'collections',
-          methods: 'GET',
+          method: 'GET',
           data: {
             collector_id: collectorId
           }
@@ -434,6 +437,7 @@
             return value
           }
         })
+        console.log(this.collector)
         wx.setNavigationBarTitle({
           title: this.collector.title
         })
