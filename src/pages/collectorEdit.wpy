@@ -19,8 +19,8 @@
             <view class="weui-cells weui-cells_after-title">
                 <view class="weui-cell">
                     <view class="weui-cell__bd">
-                        <textarea class="weui-textarea" placeholder="请输入描述" maxlength="500" rows="3" v-model="collector.desc" />
-                        <view class="weui-textarea-counter">{{ collector.desc.length }}/500</view>
+                        <textarea class="weui-textarea" placeholder="请输入描述" maxlength="200" rows="3" v-model="collector.desc" />
+                        <view class="weui-textarea-counter">{{ collector.desc.length }}/200</view>
                     </view>
                 </view>
             </view>
@@ -35,7 +35,7 @@
             </view>
 
             <view class="weui-btn-area">
-                <button class="weui-btn" type="primary" @tap="showTopTips">确定</button>
+                <button class="weui-btn" type="primary" @tap="submit">确定</button>
             </view>
         </view>
     </view>
@@ -56,7 +56,7 @@
       collector: {
         title: '',
         desc: '',
-        showMember: 0
+        showMember: true
       }
     },
     onLoad (query) {
@@ -71,7 +71,6 @@
             return value
           }
         })
-        console.log(collector);
         this.collector.title = collector.title
         this.collector.desc = collector.desc
         this.collector.showMember = collector.show_member
@@ -79,11 +78,21 @@
           title: '编辑' + collector.title
         })
       },
-      showTopTips () {
+      submit () {
+        let collector = this.collector
+        if (collector.title.length <= 0) {
+          this.fail.title = true
+          this.showTipsFlag()
+          return false
+        }
+        wx.navigateBack()
+        console.log(collector)
+      },
+      showTipsFlag () {
         this.fail.tipsFlag = true
         setTimeout(() => {
           this.fail.tipsFlag = false
-        }, 3000)
+        }, 2000)
       }
     }
   })
