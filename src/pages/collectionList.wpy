@@ -65,6 +65,7 @@
 
 .collection {
   padding: 10px 15px 0 15px;
+  margin-bottom: 45px;
 }
 .operation {
   height: 40px;
@@ -246,7 +247,7 @@
 }
 </style>
 <template>
-  <view>
+  <view style="background: #fff">
     <view class="collection">
       <view class="headTitle">
         <text>{{ collector.title }}</text>
@@ -255,7 +256,6 @@
         <span>{{ collector.desc }}</span>
       </view>
       <view class="operation">
-<!--        <text class="iconfont icon-show">描述</text>-->
         <navigator url="/pages/collectorEdit?collector_id={{ collector.id }}" class="iconfont icon-edit" style="display: initial !important;">编辑</navigator>
         <text class="iconfont icon-delete" @tap="delCollectorHandle('show')">删除</text>
       </view>
@@ -263,18 +263,24 @@
       <view class="prodList" v-for="collection in collections">
         <view class="prodBox">
           <view class="prodImg">
-            <img src="http://img.lvye100.com/pxs/BMLQhHX7ImMzUuSY.png" alt="" class="image">
+            <img src="{{ collection.product.cover }}" alt="" class="image">
           </view>
-          <view class="prodMess">
+          <view class="prodMess" v-if="!collector.show_member">
+            <text class="prodTitle">{{ collection.product.name }}</text>
+            <text class="prodTitle">
+              零售：{{list.fee[collection.id] * list.quantity[collection.id]}}元
+            </text>
+          </view>
+          <view class="prodMess" v-else>
             <text class="prodTitle">{{ collection.product.name }}</text>
             <text class="prodTitle" v-if="collection.product.kind == 1 && collection.product.price === collection.product.money">
               会员价：{{product.money * list.quantity[collection.id]}}元
             </text>
             <text class="prodTitle" v-else-if="collection.product.kind == 1 && collection.product.price !== collection.product.money">
-              零售:{{collection.product.price * list.quantity[collection.id]}}元,会员价:{{collection.product.money * list.quantity[collection.id]}}元
+              零售：{{collection.product.price * list.quantity[collection.id]}}元，会员价：{{collection.product.money * list.quantity[collection.id]}}元
             </text>
             <text class="prodTitle" v-else>
-              零售:{{list.fee[collection.id] * list.quantity[collection.id]}}元,会员:{{list.memberFee[collection.id] * list.quantity[collection.id]}}元+{{list.volume[collection.id] * list.quantity[collection.id]}}券
+              零售：{{list.fee[collection.id] * list.quantity[collection.id]}}元，会员：{{list.memberFee[collection.id] * list.quantity[collection.id]}}元+{{list.volume[collection.id] * list.quantity[collection.id]}}券
             </text>
           </view>
           <view class="prodFoot">
@@ -283,7 +289,7 @@
             <text class="add" @tap="addNum(collection.id)">+</text>
             <text class="unit">单位: {{ collection.product.min_unit }}</text>
           </view>
-          <text class=" iconfont iconDel icon-iconDel" @tap="delCollectionHandle('show')"></text>
+          <text class="iconfont iconDel icon-iconDel" @tap="delCollectionHandle('show')"></text>
         </view>
       </view>
     </view>
@@ -291,7 +297,8 @@
     <view class="numFooter">
       <view class="price">
         <view>总数量：{{ footer.totalQuantity }}</view>
-        <view class="prodTitle">零售:{{ footer.totalFee }}元, 会员:{{ footer.totalMemberFee }}元+{{ footer.totalVolume }}券</view>
+        <view class="prodTitle" v-if="!collector.show_member">零售：{{ footer.totalFee }}元</view>
+        <view class="prodTitle" v-else>零售:{{ footer.totalFee }}元, 会员:{{ footer.totalMemberFee }}元+{{ footer.totalVolume }}券</view>
       </view>
       <view class="priceBtn">
         <text>确认数量</text>
@@ -301,7 +308,7 @@
     <view class="mark" v-if="delShow"></view>
     <view class="fidDalog" v-if="delCollectorShow">
       <view>
-        <text class=" iconfont delTip icon-delTip"></text>
+        <text class="iconfont delTip icon-delTip"></text>
       </view>
       <view>你确定要删除此收藏夹吗？</view>
       <view>
@@ -311,24 +318,14 @@
     </view>
     <view class="fidDalog" v-if="delCollectionShow">
       <view>
-        <text class=" iconfont delTip icon-delTip"></text>
+        <text class="iconfont delTip icon-delTip"></text>
       </view>
-        <view>你确定要删除此产品吗？</view>
-          <view>
-            <text class="yesBtn" @tap="delCollectionHandle('del')">确定</text>
-            <text class="noBtn" @tap="delCollectionHandle('show')">取消</text>
-          </view>
-      </view>
-    <!-- 描述 -->
-<!--    <view class="descBox">-->
-<!--      <view class="descMess">-->
-<!--        <text>-->
-<!--          这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111-->
-<!--        这是描述这是描述这是描述这是描述这是描述这是描述这是描11111111-->
-<!--        </text>-->
-<!--      </view>-->
-<!--      <view class="messTrue">知道了</view>-->
-<!--    </view>-->
+      <view>你确定要删除此产品吗？</view>
+        <view>
+          <text class="yesBtn" @tap="delCollectionHandle('del')">确定</text>
+          <text class="noBtn" @tap="delCollectionHandle('show')">取消</text>
+        </view>
+    </view>
   </view>
 </template>
 
@@ -342,11 +339,12 @@
     store,
     data: {
       collector_id: null,
-      collector: {},
-      collections: {},
+      collector: [],
+      collections: [],
       delShow: false,
       delCollectorShow: false,
       delCollectionShow: false,
+      option: {},
       list: {
         quantity: {},
         fee: {},
@@ -362,7 +360,7 @@
     },
     async onLoad(query) {
       this.collector_id = query.collector_id
-      await this.getCollections(this.collector_id)
+      await this.getCollections()
       this.totalNumHandle()   // 统计数量
       this.totalFeeHandle()   // 统计总价
       this.totalMemberFeeHandle()   // 统计会员价
@@ -373,18 +371,17 @@
     },
     computed: mapState([ 'collectorListVuex' ]),
     methods: {
-      async getCollections(collectorId) {
-        this.collections = await api.authRequest({
-          url: 'collections',
-          method: 'GET',
-          data: {
-            collector_id: collectorId
-          }
-        })
+      async getCollections() {
         let quantity = {}
         let fee = {}
         let memberFee = {}
         let volume = {}
+        this.option.collector_id = this.collector_id
+        this.collections = await api.authRequest({
+          url: 'collections',
+          method: 'GET',
+          data: this.option
+        })
         this.collections.forEach(function (collection) {
           // 数量
           quantity[collection.id] = collection.quantity
@@ -403,14 +400,6 @@
               'http://img.lvye100.com/pxs/'
             )
           }
-          // product.desc = `零售：${product.price}元，会员：${product.money}元 + ${product.ticket}券`
-          // if (product.kind === 1) {
-          //   if (product.price === product.money) {
-          //     product.desc = `会员价：${product.money}元`
-          //   } else {
-          //     product.desc = `零售：${product.price}元，会员价：${product.money}元`
-          //   }
-          // }
           if (product.kind === 1) {
             product.name = '[复]' + product.name
             product.text_color = 'fu'
@@ -437,7 +426,6 @@
             return value
           }
         })
-        console.log(this.collector)
         wx.setNavigationBarTitle({
           title: this.collector.title
         })
@@ -454,6 +442,7 @@
           this.delCollectionShow = !this.delCollectionShow
         }
       },
+      // 加数量
       addNum (id) {
         this.list.quantity[id] ++
         this.totalNumHandle()
@@ -461,6 +450,7 @@
         this.totalMemberFeeHandle()
         this.totalVolumeHandle()
       },
+      // 减数量
       subNum (id) {
         if (this.list.quantity[id] == 1) {
           wx.showToast({title: '数量不能等于小于0', icon: 'none'})
@@ -507,6 +497,11 @@
         }
         this.footer.totalVolume = volume.toFixed(2)
       }
+    },
+    // 重新加载
+    async onPullDownRefresh() {
+      await this.getCollections()
+      wepy.stopPullDownRefresh()
     }
   })
 </script>

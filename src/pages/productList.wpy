@@ -1,13 +1,12 @@
 <style>
 @font-face {
-  font-family: 'iconfont'; /* project id 1314494 */
-  src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot');
-  src: url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.eot?#iefix')
-      format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1314494_u4ctf32onxf.svg#iconfont') format('svg');
+  font-family: 'iconfont';  /* project id 1345172 */
+  src: url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.eot');
+  src: url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.eot?#iefix') format('embedded-opentype'),
+  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.woff2') format('woff2'),
+  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.woff') format('woff'),
+  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1345172_knr4cta7ob.svg#iconfont') format('svg');
 }
 .iconfont {
   font-family: 'iconfont' !important;
@@ -17,8 +16,14 @@
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-.icon_collection::before {
-  content: '\e629';
+.icon-collection::before {
+  content: '\e6d9';
+}
+.icon-collection {
+  font-size: 1.8rem;
+}
+.icon-store::before {
+  content: '\e66f';
 }
 .weui-media-box {
   padding: 15px 0 !important;
@@ -54,13 +59,13 @@ navigator {
 }
 .collectionBox {
   position: fixed;
-  top: 30px;
-  width: 90%;
+  top: 30%;
+  width: 80%;
   height: 30%;
   background: #ffffff;
   border: 1px solid #dfdfdf;
   text-align: center;
-  left: 5%;
+  left: 10%;
   padding-top: 5%;
 }
 .Boxtitle {
@@ -132,7 +137,7 @@ navigator {
                 <view class="weui-media-box__desc">{{ product.desc }}</view>
               </view>
               <view class="collection">
-                <text class="iconfont icon_collection" @click="collection"></text>
+                <i class="iconfont icon-collection" @click="collectionHandle(product.id)"></i>
               </view>
               <navigator url="/pages/detail?article_id={{ product.article.id }}&user_id={{ user_id }}"></navigator>
             </view>
@@ -144,14 +149,14 @@ navigator {
         </view>
       </view>
     </view>
-    <view class="collectionBox">
-      <view class="Boxtitle">请选择收藏夹</view>
+    <view class="collectionBox" v-if="collection.isShow">
+      <view class="Boxtitle"><text class="iconfont icon-store">请选择收藏夹</text></view>
       <view class="toAddBox">新建收藏夹</view>
       <view class="selectBox">
         <view class="section">
-          <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+          <picker bindchange="bindPickerChange" value="{{collection.selectIndex}}" range="{{collection.collectors}}">
             <view class="picker">
-              {{array[index]}} <span class="selectIcon">></span>
+              {{collection.collectors[collection.selectIndex]}} <span class="selectIcon">></span>
             </view>
           </picker>
         </view>
@@ -161,36 +166,57 @@ navigator {
         <span class="noBtn">取消</span>
       </view>
     </view>
+  </view>
 </template>
 
 <script>
 import wepy from '@wepy/core'
 import api from '@/utils/request'
+import store from '../store'
+import { mapState } from '@wepy/x'
 
 wepy.page({
+  store,
   data: {
-    index: 0,
-    isShow: false,
-    array: ['套餐1', '套餐2', '套餐3', '套餐4'],
-    // 有没有更多数据
-    noMoreData: false,
-    // 是否在加载中
-    isLoading: false,
+    collection: {
+      selectIndex: 0,
+      isShow: false,
+      collectors: [],
+      product_id: null  // 当前要收藏产品的id
+    },
+    noMoreData: false,  // 有没有更多数据
+    isLoading: false,   // 是否在加载中
     products: [],
     user_id: 0,
-    total: 0,
-    category_id: 0,
+    total: 0,         // 产品总数
+    category_id: 0,   // 当前产品分类id
     option: {},
     state: '',
     title: ''
   },
+  computed: mapState([ 'collectorListVuex' ]),
+  async onLoad(options) {
+    this.category_id = options.category_id
+    // 获取产品列表
+    await this.getProducts()
+  },
+  async onShow() {
+    if (wx.getStorageSync('user_id')) {
+      this.user_id = wx.getStorageSync('user_id')
+    } else {
+      let login = await wepy.login()
+      let user = await api.request('miniprogram/user/login?code=' + login.code)
+      if (user.code === 200) {
+        wx.setStorageSync('user_id', user.data.user_id)
+        this.user_id = user.data.user_id
+      }
+    }
+  },
   methods: {
     bindPickerChange: function (e) {
-      console.log('picker发送选择改变，携带值为', e.$wx.detail.value)
-      // this.setData({
-      //   index:  e.$wx.detail.value
-      // })
+      this.collection.selectIndex = e.$wx.detail.value
     },
+    // 获取产品列表
     async getProducts(reset = false) {
       if (!this.option.page) {
         this.option.page = 1
@@ -250,24 +276,36 @@ wepy.page({
         })
       }
     },
-    collection() {
-      console.log("collection")
-    }
-  },
-  async onLoad(options) {
-    this.category_id = options.category_id
-    await this.getProducts()
-  },
-  async onShow() {
-    if (wx.getStorageSync('user_id')) {
-      this.user_id = wx.getStorageSync('user_id')
-    } else {
-      let login = await wepy.login()
-      let user = await api.request('miniprogram/user/login?code=' + login.code)
-      if (user.code === 200) {
-        wx.setStorageSync('user_id', user.data.user_id)
-        this.user_id = user.data.user_id
+    // 收藏操作
+    async collectionHandle(productId) {
+      // 获取收藏夹列表并缓存
+      if (this.collectorListVuex.length <= 0) {
+        await this.getCollectors()
+      } else {
+        this.collectorListHandle(this.collectorListVuex)
       }
+      this.collection.product_id = productId
+      this.collection.isShow = true
+    },
+    // 获取收藏夹列表
+    async getCollectors () {
+      let collectorList = await api.authRequest({
+        url: 'collectors',
+        data: {
+          list: true
+        }
+      })
+      this.collectorListHandle(collectorList)
+      // 缓存收藏夹列表
+      store.commit('collectorStore', JSON.parse(JSON.stringify(collectorList)))
+    },
+    // 处理收藏夹列表的数据
+    collectorListHandle (list) {
+      let newArr = []
+      for (let item in list) {
+        newArr.push(list[item]['title'])
+      }
+      this.collection.collectors = newArr
     }
   },
   // 重新加载
@@ -275,7 +313,7 @@ wepy.page({
     this.noMoreData = false
     this.option.page = 1
     await this.getProducts(true)
-    wepy.stopPullDownRefresh()
+    wx.stopPullDownRefresh()
   },
   // 加载更多
   async onReachBottom() {

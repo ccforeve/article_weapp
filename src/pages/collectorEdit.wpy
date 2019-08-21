@@ -91,6 +91,7 @@
         // 编辑操作
         this.updateCollector()
       },
+      // 提示错误
       showTipsFlag () {
         this.fail.tipsFlag = true
         setTimeout(() => {
