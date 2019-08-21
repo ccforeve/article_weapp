@@ -1,12 +1,12 @@
 <style>
 @font-face {
   font-family: 'iconfont';  /* project id 1345172 */
-  src: url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.eot');
-  src: url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.eot?#iefix') format('embedded-opentype'),
-  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.woff2') format('woff2'),
-  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.woff') format('woff'),
-  url('https://at.alicdn.com/t/font_1345172_knr4cta7ob.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1345172_knr4cta7ob.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1345172_8ajjpo39im6.eot');
+  src: url('//at.alicdn.com/t/font_1345172_8ajjpo39im6.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1345172_8ajjpo39im6.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1345172_8ajjpo39im6.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1345172_8ajjpo39im6.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1345172_8ajjpo39im6.svg#iconfont') format('svg');
 }
 .iconfont {
   font-family: 'iconfont' !important;
@@ -61,12 +61,11 @@ navigator {
   position: fixed;
   top: 30%;
   width: 80%;
-  height: 30%;
   background: #ffffff;
   border: 1px solid #dfdfdf;
   text-align: center;
   left: 10%;
-  padding-top: 5%;
+  padding: 5% 0;
 }
 .Boxtitle {
   font-size: 20px;
@@ -75,7 +74,7 @@ navigator {
   font-size: 12px;
   padding: 3px 4px;
   border: 1px solid #dfdfdf;
-  width: 70px;
+  width: 75px;
   margin: 0 auto;
 }
 .selectIcon {
@@ -86,21 +85,21 @@ navigator {
   margin-right: 8px;
 }
 .section {
-  width: 70%;
+  width: 80%;
   margin: 10px auto;
   border: 1px solid #dfdfdf;
   font-size: 13px;
   text-align: left;
   padding-left: 10px;
-  height: 26px;
-  line-height: 26px;
+  height: 35px;
+  line-height: 35px;
   border-radius: 6px;
 }
 .yesBtn,
 .noBtn {
   display: inline-block;
   font-size: 15px;
-  padding: 4px 10%;
+  padding: 4px 13%;
   color: #fff;
   background: green;
   border-radius: 4px;
@@ -110,6 +109,14 @@ navigator {
   margin-left: 20px;
   background: #fff;
   color: #cccccc;
+}
+.picker {
+  white-space: nowrap;/*内容超宽后禁止换行显示*/
+  overflow: hidden;/*超出部分隐藏*/
+  text-overflow:ellipsis;/*文字超出部分以省略号显示*/
+}
+.collected {
+  color: red;
 }
 </style>
 <template>
@@ -137,7 +144,7 @@ navigator {
                 <view class="weui-media-box__desc">{{ product.desc }}</view>
               </view>
               <view class="collection">
-                <i class="iconfont icon-collection" @click="collectionHandle(product.id)"></i>
+                <i class="iconfont icon-collection" :class="{'collected': product.collection}" @click="collectionHandle(product.id)"></i>
               </view>
               <navigator url="/pages/detail?article_id={{ product.article.id }}&user_id={{ user_id }}"></navigator>
             </view>
@@ -150,20 +157,20 @@ navigator {
       </view>
     </view>
     <view class="collectionBox" v-if="collection.isShow">
-      <view class="Boxtitle"><text class="iconfont icon-store">请选择收藏夹</text></view>
-      <view class="toAddBox">新建收藏夹</view>
+      <view class="Boxtitle">请选择收藏夹</view>
+      <view class="toAddBox"><i class="iconfont icon-store" style="font-size: 12px">新建收藏夹</i></view>
       <view class="selectBox">
         <view class="section">
           <picker bindchange="bindPickerChange" value="{{collection.selectIndex}}" range="{{collection.collectors}}">
             <view class="picker">
-              {{collection.collectors[collection.selectIndex]}} <span class="selectIcon">></span>
+              {{collection.collectors[collection.selectIndex]}}
             </view>
           </picker>
         </view>
       </view>
       <view>
-        <span class="yesBtn">确定</span>
-        <span class="noBtn">取消</span>
+        <span class="yesBtn" @tap="submitCollection">确定</span>
+        <span class="noBtn" @tap="showHandle">取消</span>
       </view>
     </view>
   </view>
@@ -182,35 +189,33 @@ wepy.page({
       selectIndex: 0,
       isShow: false,
       collectors: [],
-      product_id: null  // 当前要收藏产品的id
+      product_id: 0  // 当前要收藏产品的id
     },
-    noMoreData: false,  // 有没有更多数据
-    isLoading: false,   // 是否在加载中
     products: [],
     user_id: 0,
     total: 0,         // 产品总数
     category_id: 0,   // 当前产品分类id
     option: {},
     state: '',
-    title: ''
+    title: '',
+    noMoreData: false,  // 有没有更多数据
+    isLoading: false    // 是否在加载中
   },
   computed: mapState([ 'collectorListVuex' ]),
   async onLoad(options) {
     this.category_id = options.category_id
-    // 获取产品列表
-    await this.getProducts()
-  },
-  async onShow() {
     if (wx.getStorageSync('user_id')) {
       this.user_id = wx.getStorageSync('user_id')
     } else {
       let login = await wepy.login()
       let user = await api.request('miniprogram/user/login?code=' + login.code)
       if (user.code === 200) {
-        wx.setStorageSync('user_id', user.data.user_id)
-        this.user_id = user.data.user_id
+        wx.setStorageSync('user_id', user.user_id)
+        this.user_id = user.user_id
       }
     }
+    // 获取产品列表
+    await this.getProducts()
   },
   methods: {
     bindPickerChange: function (e) {
@@ -220,6 +225,9 @@ wepy.page({
     async getProducts(reset = false) {
       if (!this.option.page) {
         this.option.page = 1
+      }
+      if (this.user_id) {
+        this.option.user_id = this.user_id
       }
       let operations = {
         url: 'products/' + this.category_id + '/category',
@@ -278,13 +286,13 @@ wepy.page({
     },
     // 收藏操作
     async collectionHandle(productId) {
+      this.collection.product_id = productId
       // 获取收藏夹列表并缓存
       if (this.collectorListVuex.length <= 0) {
         await this.getCollectors()
       } else {
         this.collectorListHandle(this.collectorListVuex)
       }
-      this.collection.product_id = productId
       this.collection.isShow = true
     },
     // 获取收藏夹列表
@@ -306,6 +314,25 @@ wepy.page({
         newArr.push(list[item]['title'])
       }
       this.collection.collectors = newArr
+    },
+    async submitCollection () {
+      let option = {}
+      option.product_id = this.collection.product_id
+      let findCollector = this.collectorListVuex.find(value => {
+        if (value.title === this.collection.collectors[this.collection.selectIndex]) {
+          return value
+        }
+      })
+      option.collector_id = findCollector.id
+      let collectionStoreResponse = await api.authRequest({
+        url: 'collection',
+        method: 'POST',
+        data: option
+      })
+    },
+    // 关闭收藏弹窗
+    showHandle () {
+      this.collection.isShow = !this.collection.isShow
     }
   },
   // 重新加载
