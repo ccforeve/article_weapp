@@ -144,7 +144,7 @@ navigator {
                 <view class="weui-media-box__desc">{{ product.desc }}</view>
               </view>
               <view class="collection">
-                <i class="iconfont icon-collection" :class="{'collected': product.collection}" @click="collectionHandle(product.id)"></i>
+                <i class="iconfont icon-collection" :class="{'collected': collectedList[product.id] > 0}" @click="collectionHandle(product.collection, product.id)"></i>
               </view>
               <navigator url="/pages/detail?article_id={{ product.article.id }}&user_id={{ user_id }}"></navigator>
             </view>
@@ -191,6 +191,7 @@ wepy.page({
       collectors: [],
       product_id: 0  // 当前要收藏产品的id
     },
+    collectedList: {1: '1', 2: '2', 3: '3', 2759: '2759'},
     products: [],
     user_id: 0,
     total: 0,         // 产品总数
@@ -216,6 +217,7 @@ wepy.page({
     }
     // 获取产品列表
     await this.getProducts()
+    console.log(this.collectedList)
   },
   methods: {
     bindPickerChange: function (e) {
@@ -240,6 +242,7 @@ wepy.page({
           title: productResponse.category.name
         })
         let products = productResponse.products.data
+        var collectedList = {}
         products.forEach(function (product) {
           let cover = product.cover
           if (cover.indexOf('//img.lvye100.com') >= 0) {
@@ -269,14 +272,21 @@ wepy.page({
             product.state_text = '[停]'
             product.text_color = 'ting'
           }
+          // 处理已收藏的产品
+          if (product.collection) {
+            collectedList[product.id] = product.collection.id
+          }
         })
-        // 如果传入参数 reset 为true，则覆盖 topics
+        // 如果传入参数 reset 为true，则覆盖 products
         this.products = reset ? products : this.products.concat(products)
+        // 总数
+        this.total = productResponse.products.total
+        // 已收藏产品
+        this.collectedList = reset ? collectedList : Object.assign(this.collectedList, collectedList)
         // 判断是否是最后一页
         if (productResponse.products.current_page === productResponse.products.last_page) {
           this.noMoreData = true
         }
-        this.total = productResponse.products.total
       } catch (e) {
         wx.showModal({
           title: '提示',
@@ -285,15 +295,45 @@ wepy.page({
       }
     },
     // 收藏操作
-    async collectionHandle(productId) {
-      this.collection.product_id = productId
-      // 获取收藏夹列表并缓存
-      if (this.collectorListVuex.length <= 0) {
-        await this.getCollectors()
-      } else {
-        this.collectorListHandle(this.collectorListVuex)
+    async collectionHandle(collection, productId) {
+      if (!this.user_id) {
+        wx.showModal({
+          title: '警告',
+          content: '您尚未登陆，不可收藏产品！',
+          confirmText: '去登陆',
+          success: function (res) {
+            if (res.confirm) {
+              wx.navigateTo({url: '/pages/toLogin'})
+            }
+          }
+        })
+        return false
       }
-      this.collection.isShow = true
+      if (collection) {
+        wx.showModal({
+          title: '警告',
+          content: '确定要取消收藏此产品吗？',
+          confirmText: '取消收藏',
+          confirmColor: '#FF0000',
+          success: async function (res) {
+            if (res.confirm) {
+              await api.authRequest({
+                url: 'collections/' + collection.id,
+                method: 'DELETE'
+              })
+            }
+          }
+        })
+      } else {
+        this.collection.product_id = productId
+        // 获取收藏夹列表并缓存
+        if (this.collectorListVuex.length <= 0) {
+          await this.getCollectors()
+        } else {
+          this.collectorListHandle(this.collectorListVuex)
+        }
+        this.collection.isShow = true
+      }
     },
     // 获取收藏夹列表
     async getCollectors () {
@@ -325,10 +365,11 @@ wepy.page({
       })
       option.collector_id = findCollector.id
       let collectionStoreResponse = await api.authRequest({
-        url: 'collection',
+        url: 'collections',
         method: 'POST',
         data: option
       })
+      this.collectedList[this.collection.product_id] = collectionStoreResponse.collected_id
     },
     // 关闭收藏弹窗
     showHandle () {

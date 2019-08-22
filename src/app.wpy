@@ -109,7 +109,8 @@ wepy.app({
       'pages/collector',
       'pages/collectionList',
       'pages/collectionShare',
-      'pages/collectorEdit'
+      'pages/collectorEdit',
+      'pages/demo'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -128,6 +129,9 @@ wepy.app({
         text: '收藏',
         iconPath: 'images/dir.png',
         selectedIconPath: 'images/dir_select.png'
+      }, {
+        pagePath: 'pages/demo',
+        text: '测试'
       }]
     }
 }
