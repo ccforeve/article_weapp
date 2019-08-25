@@ -1,0 +1,84 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index",
+			"style": {
+				"navigationBarTitleText": "绿叶产品价格表"
+			}
+		},
+		{
+			"path": "pages/collector",
+			"style": {
+				"navigationBarTitleText": "收藏夹",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/productList",
+			"style": {
+				"navigationBarTitleText": "产品列表",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/productDetail",
+			"style": {
+				"navigationBarTitleText": "详情"
+			}
+		},
+		{
+			"path": "pages/pay",
+			"style": {
+				"navigationBarTitleText": "支付"
+			}
+		},
+		{
+			"path": "pages/collectionList",
+			"style": {
+				"navigationBarTitleText": "收藏列表",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/collectorEdit",
+			"style": {
+				"navigationBarTitleText": "编辑收藏夹"
+			}
+		},
+		{
+			"path": "pages/collectorStore",
+			"style": {
+				"navigationBarTitleText": "添加收藏夹"
+			}
+		},
+		{
+			"path": "pages/collectionShare",
+			"style": {
+				"navigationBarTitleText": "收藏夹"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"list": [{
+			"pagePath": "pages/index",
+			"text": "分类",
+			"iconPath": "static/image/home.png",
+			"selectedIconPath": "static/image/home_select.png"
+		}, {
+			"pagePath": "pages/collector",
+			"text": "收藏",
+			"iconPath": "static/image/dir.png",
+			"selectedIconPath": "static/image/dir_select.png"
+		}, {
+			"pagePath": "pages/collectionShare",
+			"text": "测试",
+			"iconPath": "static/image/dir.png",
+			"selectedIconPath": "static/image/dir_select.png"
+		}]
+	}
+}
