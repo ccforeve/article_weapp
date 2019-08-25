@@ -6,13 +6,13 @@ export function request (options) {
     options.fail = function (res) {
       resolve(res)
     }
-    wx.request(options)
+    uni.request(options)
   })
 }
 
 export function login () {
   return new Promise((resolve, reject) => {
-    wx.login({
+    uni.login({
       success: function (res) {
         resolve(res)
       },
