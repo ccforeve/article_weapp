@@ -96,6 +96,7 @@
 				delCollectionShow: false,
 				delCollectionId: null,		// 需要删除的收藏id
 				option: {},
+				state: null,						// 复制收藏夹状态
 				list: {
 				  quantity: {},
 				  fee: {},
@@ -112,6 +113,7 @@
 		},
 		async onLoad(query) {
 		  this.collector_id = query.collector_id
+			this.state = query.state
 			await this.getCollections()
 			this.totalNumHandle()   // 统计数量
 			this.totalFeeHandle()   // 统计总价
@@ -126,6 +128,7 @@
 		},
 		methods: {
 			...mapMutations(['refresh']),
+			// 获取收藏夹下的收藏列表
 			async getCollections() {
 				let quantity = {}
 				let fee = {}
@@ -175,13 +178,20 @@
 				this.list.volume = volume
 			},
 			// 获取当前收藏夹
-			getCollector (collectorId) {
-				let collector = this.collectorListVuex
-				this.collector = collector.find(function (value) {
-					if (value.id == collectorId) {
-						return value
-					}
-				})
+			async getCollector (collectorId) {
+				if (this.state == 'copy') {
+					this.collector = await api.authRequest({
+						url: 'collectors/' + this.option.collector_id,
+						method: 'GET'
+					})
+				} else {
+					let collector = this.collectorListVuex
+					this.collector = collector.find(function (value) {
+						if (value.id == collectorId) {
+							return value
+						}
+					})
+				}
 				uni.setNavigationBarTitle({
 					title: this.collector.title
 				})
@@ -301,13 +311,20 @@
 			},
 			// 修改收藏的数量
 			async updateCollectionHandle () {
-				await api.authRequest({
+				let updateList = await api.authRequest({
 					url: 'collections/update_list',
 					method: 'PUT',
 					data: {
 						list: this.list.quantity
 					}
 				})
+				if (updateList.status_code == 403) {
+					uni.showToast({
+						title: updateList.message,
+						icon: 'none'
+					});
+					return false
+				}
 				uni.showToast({
 					title: '操作成功',
 					icon: 'success'

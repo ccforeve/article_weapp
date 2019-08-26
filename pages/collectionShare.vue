@@ -188,14 +188,22 @@
 						collector_id: this.option.collector_id
 					}
 				})
+				if (copyResponse.status_code == 403) {
+					uni.showToast({
+						title: copyResponse.message,
+						icon: 'none',
+						duration: 1500
+					});
+					return false
+				}
 				uni.showToast({
 					title: '复制收藏夹成功',
 					icon: 'success',
 					duration: 1500
-				});
+				})
 				setTimeout(function () {
 					uni.navigateTo({
-						url: '/pages/collectionList?collector_id=' + copyResponse.collector_d
+						url: `/pages/collectionList?collector_id=${copyResponse.collector_id}&state=copy`
 					})
 				}, 1500)
 			}
