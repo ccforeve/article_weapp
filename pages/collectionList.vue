@@ -53,7 +53,7 @@
 	      <view class="prodTitle" v-else>零售:{{ footer.totalFee }}元, 会员:{{ footer.totalMemberFee }}元+{{ footer.totalVolume }}券</view>
 	    </view>
 	    <view class="priceBtn">
-	      <text>确认数量</text>
+	      <text @click="updateCollectionHandle">确认数量</text>
 	    </view>
 	  </view>
 	  <!-- 删除弹窗 -->
@@ -298,6 +298,20 @@
 					volume += Number(v[key])
 				}
 				this.footer.totalVolume = volume.toFixed(2)
+			},
+			// 修改收藏的数量
+			async updateCollectionHandle () {
+				await api.authRequest({
+					url: 'collections/update_list',
+					method: 'PUT',
+					data: {
+						list: this.list.quantity
+					}
+				})
+				uni.showToast({
+					title: '操作成功',
+					icon: 'success'
+				});
 			}
 		},
 		// 重新加载

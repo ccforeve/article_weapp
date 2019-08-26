@@ -1,6 +1,2 @@
-node_modules
-weapp
-.DS_Store
-.wepycache
-.wepyignore
+unpackage
 .idea/*

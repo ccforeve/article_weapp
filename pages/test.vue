@@ -79,8 +79,8 @@
 			}
 		},
 		async onLoad(option) {
-			this.option.user_id = option.user_id
-			this.option.collector_id = option.collector_id
+			this.option.user_id = 50
+			this.option.collector_id = 1
 			await this.getCollector()				// 收藏夹详情
 			await this.getCollections()			// 收藏夹下的收藏列表
 			this.totalNumHandle()   				// 统计数量

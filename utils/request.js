@@ -11,20 +11,21 @@ const request = async (options, getData = true, showLoading = true) => {
   }
   // 显示加载中
   if (showLoading) {
-    wx.showLoading({title: '加载中'})
+    uni.showLoading({title: '加载中'})
   }
   options.url = host + options.url
   // 调用小程序的 request 方法
   let response = await api.request(options)
   if (showLoading) {
     // 隐藏加载中
-    wx.hideLoading()
+    uni.hideLoading()
   }
   // 服务器异常后给与提示
   if (response.statusCode === 500) {
-    wx.showModal({
+    uni.showModal({
       title: '提示',
-      content: '服务器错误，请联系管理员或重试'
+      content: '服务器错误，请联系管理员或重试',
+			showCancel: false
     })
     return false
   }
@@ -52,9 +53,9 @@ const login = async (params = {}) => {
   })
 
   // 登录成功，记录 token 信息及用户信息
-  wx.setStorageSync('user', authResponse.user)
-  wx.setStorageSync('access_token', authResponse.access_token)
-  wx.setStorageSync('access_token_expired_at', new Date().getTime() + authResponse.expires_in * 1000)
+  uni.setStorageSync('user', authResponse.user)
+  uni.setStorageSync('access_token', authResponse.access_token)
+  uni.setStorageSync('access_token_expired_at', new Date().getTime() + authResponse.expires_in * 1000)
 
   return authResponse
 }
@@ -75,8 +76,8 @@ const refreshToken = async (accessToken) => {
 // 获取token
 const getToken = async () => {
   // 从缓存中取出token
-  let accessToken = wx.getStorageSync('access_token')
-  let expiredAt = wx.getStorageSync('access_token_expired_at')
+  let accessToken = uni.getStorageSync('access_token')
+  let expiredAt = uni.getStorageSync('access_token_expired_at')
 
   // 如果token过期了，则调用刷新方法
   if (accessToken && new Date().getTime() > expiredAt) {
@@ -85,8 +86,8 @@ const getToken = async () => {
     if (refreshResponse.statusCode === 200) {
       accessToken = refreshResponse.data.access_token
       // 将 Token 及过期时间保存在 storage 中
-      wx.setStorageSync('access_token', accessToken)
-      wx.setStorageSync('access_token_expired_at', new Date().getTime() + refreshResponse.data.expires_in * 1000)
+      uni.setStorageSync('access_token', accessToken)
+      uni.setStorageSync('access_token_expired_at', new Date().getTime() + refreshResponse.data.expires_in * 1000)
     } else {
       // 刷新失败了，重新调用登录方法，设置 Token
       let authResponse = await login()
@@ -106,7 +107,7 @@ const authRequest = async (options, showLoading = true) => {
   }
   // 显示加载中
   if (showLoading) {
-    wx.showLoading({title: '加载中'})
+    uni.showLoading({title: '加载中'})
   }
   options.url = host + options.url
   let accessToken = await getToken()
@@ -118,11 +119,11 @@ const authRequest = async (options, showLoading = true) => {
   let response = await api.request(options)
   if (showLoading) {
     // 隐藏加载中
-    wx.hideLoading()
+    uni.hideLoading()
   }
   // 服务器异常后给与提示
   if (response.statusCode === 500) {
-    wx.showModal({
+    uni.showModal({
       title: '提示',
       content: '服务器错误，请联系管理员或重试'
     })

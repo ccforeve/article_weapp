@@ -290,7 +290,7 @@
 				} 
 				this.collectedList.push(productId)
 				// 刷新收藏夹列表
-				_this.refresh(true)
+				this.refresh(true)
 			},
 			// 关闭收藏弹窗
 			showHandle () {

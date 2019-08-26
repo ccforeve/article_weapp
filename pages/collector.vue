@@ -53,12 +53,12 @@
 				this.option.page = 1
 				this.collectors = []
 				await this.getCollectors()
-				this.refresh(false)
 			}
 		},
 		methods: {
 			...mapMutations(['collectorStore', 'refresh']),
 			async getCollectors (reset = false) {
+				this.refresh(false)
 				if (!this.option.page) {
 					this.option.page = 1
 				}
@@ -68,7 +68,7 @@
 				})
 				// 缓存收藏夹列表
 				this.collectorStore(JSON.parse(JSON.stringify(collectorList.data)))
-				let collectors = this.collectorHandle(collectorList.data)
+				let collectors = collectorList.data
 
 				// 如果传入参数 reset 为true，则覆盖 collectors
 				this.collectors = reset ? collectors : this.collectors.concat(collectors)
@@ -78,18 +78,6 @@
 				if (collectorList.current_page === collectorList.last_page) {
 					this.noMoreData = true
 				}
-			},
-			// 处理列表数据
-			collectorHandle (collectors) {
-				collectors.forEach(function (value) {
-					if (value.desc && value.desc.length > 26) {
-						value.desc = value.desc.substr(0, 26) + '...'
-					}
-					if (value.title && value.title.length > 14) {
-						value.title = value.title.substr(0, 14) + '...'
-					}
-				})
-				return collectors
 			}
 		},
 		// 重新加载
@@ -189,7 +177,8 @@
 	}
 	.prdTitle {
 		font-size: 15px;
-		width: 100%;
+		width: 85%;
+		display: inline-block;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -202,8 +191,11 @@
 		font-size: 12px;
 	}
 	.prdMess {
-		width: 72%;
+		width: 80%;
 		display: inline-block;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 	.boxHead {
 		margin-bottom: 5px;

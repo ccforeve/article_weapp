@@ -56,6 +56,12 @@
 			"style": {
 				"navigationBarTitleText": "收藏夹"
 			}
+		},
+		{
+			"path": "pages/test",
+			"style": {
+				"navigationBarTitleText": "测试"
+			}
 		}
 	],
 	"globalStyle": {
@@ -75,7 +81,7 @@
 			"iconPath": "static/image/dir.png",
 			"selectedIconPath": "static/image/dir_select.png"
 		}, {
-			"pagePath": "pages/collectionShare",
+			"pagePath": "pages/test",
 			"text": "测试",
 			"iconPath": "static/image/dir.png",
 			"selectedIconPath": "static/image/dir_select.png"
