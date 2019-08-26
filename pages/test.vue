@@ -2,7 +2,7 @@
 	<view>
 		<view class="collection">
 			<view class="headTitle user">
-				<span>钟金春的收藏夹/11111111</span>
+				<span>{{user.nickname}}的收藏夹/{{user.phone}}</span>
 			</view>
 			<view class="headTitle">
 				<view>{{collector.title}}</view>
@@ -12,10 +12,10 @@
 			</view>
 			<!-- 产品列表 -->
 			<view class="prodList" v-for="(collection, index) in collections" :key="index">
-				<view class="prodBox">
-					<text class="prodImg">
+				<navigator :url="'/pages/productDetail?article_id=' + collection.product.article.id + '&user_id=' + option.user_id" class="prodBox">
+					<view class="prodImg">
 						<img :src="collection.product.cover" class="image">
-					</text>
+					</view>
 					<view class="prodMess" v-if="!collector.show_member">
 					  <text class="prodTitle">{{ collection.product.name }}</text>
 					  <text class="prodTitle">
@@ -35,7 +35,7 @@
 					  </text>
 					</view>
 					<text class="prodNum">{{ collection.quantity + collection.product.min_unit }}</text>
-				</view>
+				</navigator>
 			</view>
 		</view>
 		<!-- 确认数量footer -->
@@ -58,6 +58,7 @@
 	export default {
 		data() {
 			return {
+				user: [],
 				collector: [],
 				collections: [],
 				option: {
@@ -81,6 +82,7 @@
 		async onLoad(option) {
 			this.option.user_id = 50
 			this.option.collector_id = 1
+			await this.getUser()
 			await this.getCollector()				// 收藏夹详情
 			await this.getCollections()			// 收藏夹下的收藏列表
 			this.totalNumHandle()   				// 统计数量
@@ -89,6 +91,16 @@
 			this.totalVolumeHandle()   			// 统计优惠劵
 		},
 		methods: {
+			// 获取当前用户
+			async getUser () {
+				this.user = await api.authRequest({
+					url: 'user',
+					method: 'GET',
+					data: {
+						user_id: this.option.user_id
+					}
+				})
+			},
 			// 获取当前收藏夹
 			async getCollector () {
 				this.collector = await api.authRequest({
