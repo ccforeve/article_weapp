@@ -4,13 +4,13 @@
 	export default {
 		onLaunch: async function() {
 			let user = await curl.login()
-			    if (user.code === 401) {
-			      this.getUser(user.session_key)
-			      uni.setStorageSync('session_key', user.session_key)
-			    } else {
-			      // 缓存用户id
-			      uni.setStorageSync('user_id', user.user_id)
-			    }
+			if (user.code === 401) {
+				this.getUser(user.session_key)
+				uni.setStorageSync('session_key', user.session_key)
+			} else {
+				// 缓存用户id
+				uni.setStorageSync('user_id', user.user_id)
+			}
 		},
 		methods: {
 		    async getUser(session) {

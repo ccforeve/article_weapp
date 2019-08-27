@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/toLogin",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
 			"path": "pages/collector",
 			"style": {
 				"navigationBarTitleText": "收藏夹",

@@ -91,7 +91,7 @@
 			if (uni.getStorageSync('user_id')) {
 				this.user_id = uni.getStorageSync('user_id')
 			} else {
-				let login = await wepy.login()
+				let login = await uni.login()
 				let user = await api.request('miniprogram/user/login?code=' + login.code)
 				if (user.code === 200) {
 					uni.setStorageSync('user_id', user.user_id)
