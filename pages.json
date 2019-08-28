@@ -62,6 +62,12 @@
 			"style": {
 				"navigationBarTitleText": "收藏夹"
 			}
+		},
+		{
+			"path": "pages/toPay",
+			"style": {
+				"navigationBarTitleText": "支付"
+			}
 		}
 	],
 	"globalStyle": {

@@ -252,9 +252,16 @@
 						list: true
 					}
 				})
+				// 没有收藏夹的时候跳转到新增收藏夹
+				if (collectorList.length <= 0) {
+					uni.navigateTo({
+						url: '/pages/collectorStore?productId=' + this.collection.product_id
+					})
+					return false
+				}
 				this.collectorListHandle(collectorList)
 				// 缓存收藏夹列表
-				this.collectorStore(JSON.parse(JSON.stringify(collectorList)))
+				this.collectorStore(collectorList)
 			},
 			// 处理收藏夹列表的数据
 			collectorListHandle (list) {
@@ -282,10 +289,21 @@
 				})
 				this.showHandle()
 				if ( collectionStoreResponse.status_code == 403 ) {
-					uni.showToast({
-						title: collectionStoreResponse.message,
-						icon: 'none'
+					uni.showModal({
+						title: '警告',
+						content: collectionStoreResponse.message,
+						cancelColor: '#09BB07',
+						confirmText: '开通会员',
+						success: res => {
+							if (res.confirm) {
+							  uni.navigateTo({url: '/pages/toPay'});
+							}
+						}
 					})
+					// uni.showToast({
+					// 	title: collectionStoreResponse.message,
+					// 	icon: 'none'
+					// })
 					return false
 				} 
 				this.collectedList.push(productId)
@@ -370,6 +388,9 @@
 	}
 	.weui-media-box__info {
 	  margin-top: 5px !important;
+	}
+	.weui-media-box__info__meta {
+		width: 45%;
 	}
 	.label-text {
 	  color: #000000;

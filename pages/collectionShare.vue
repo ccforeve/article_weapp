@@ -201,10 +201,16 @@
 					}
 				})
 				if (copyResponse.status_code == 403) {
-					uni.showToast({
-						title: copyResponse.message,
-						icon: 'none',
-						duration: 1500
+					uni.showModal({
+						title: '警告',
+						content: copyResponse.message,
+						cancelColor: '#09BB07',
+						confirmText: '开通会员',
+						success: res => {
+							if (res.confirm) {
+							  uni.navigateTo({url: '/pages/toPay'});
+							}
+						}
 					});
 					return false
 				}

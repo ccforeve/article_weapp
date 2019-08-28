@@ -103,9 +103,25 @@
 					this.showTipsFlag()
 					return false
 				}
+				if (storeResponse.status_code == 403) {
+					this.fail.tipsMessage = storeResponse.message
+					this.showTipsFlag()
+					uni.showModal({
+						title: '警告',
+						content: storeResponse.message,
+						cancelColor: '#09BB07',
+						confirmText: '开通会员',
+						success: res => {
+							if (res.confirm) {
+							  uni.navigateTo({url: '/pages/toPay'});
+							}
+						}
+					})
+					return false
+				}
 				// 更新vuex collectorList数据
-				let collectorList = this.collectorListVuex.push(storeResponse.data.collector)
-				this.collectorStore(JSON.parse(JSON.stringify(collectorList)))
+				this.collectorListVuex.push(storeResponse.data.collector)
+				this.collectorStore(this.collectorListVuex)
 				// 刷新收藏夹列表
 				this.refresh(true)
 				// 返回产品页
