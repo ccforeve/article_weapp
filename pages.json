@@ -7,9 +7,9 @@
 			}
 		},
 		{
-			"path": "pages/toLogin",
+			"path": "pages/person",
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationBarTitleText": "个人中心"
 			}
 		},
 		{
@@ -24,6 +24,12 @@
 			"style": {
 				"navigationBarTitleText": "产品列表",
 				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/toLogin",
+			"style": {
+				"navigationBarTitleText": "登录"
 			}
 		},
 		{
@@ -84,6 +90,11 @@
 		}, {
 			"pagePath": "pages/collector",
 			"text": "收藏",
+			"iconPath": "static/image/dir.png",
+			"selectedIconPath": "static/image/dir_select.png"
+		}, {
+			"pagePath": "pages/person",
+			"text": "个人中心",
 			"iconPath": "static/image/dir.png",
 			"selectedIconPath": "static/image/dir_select.png"
 		}]
