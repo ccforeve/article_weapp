@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/search",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		},
+		{
 			"path": "pages/person",
 			"style": {
 				"navigationBarTitleText": "个人中心"
@@ -23,6 +29,13 @@
 			"path": "pages/productList",
 			"style": {
 				"navigationBarTitleText": "产品列表",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/productSearch",
+			"style": {
+				"navigationBarTitleText": "搜索结果",
 				"enablePullDownRefresh": true
 			}
 		},
@@ -74,6 +87,12 @@
 			"style": {
 				"navigationBarTitleText": "支付"
 			}
+		},
+		{
+			"path": "pages/userBase",
+			"style": {
+				"navigationBarTitleText": "基本信息"
+			}
 		}
 	],
 	"globalStyle": {
@@ -85,18 +104,28 @@
 		"list": [{
 			"pagePath": "pages/index",
 			"text": "分类",
-			"iconPath": "static/image/home.png",
-			"selectedIconPath": "static/image/home_select.png"
+			"iconPath": "static/image/category.png",
+			"selectedIconPath": "static/image/category_select.png"
 		}, {
-			"pagePath": "pages/collector",
-			"text": "收藏",
-			"iconPath": "static/image/dir.png",
-			"selectedIconPath": "static/image/dir_select.png"
+			"pagePath": "pages/search",
+			"text": "搜索",
+			"iconPath": "static/image/search.png",
+			"selectedIconPath": "static/image/search_select.png"
 		}, {
 			"pagePath": "pages/person",
 			"text": "个人中心",
-			"iconPath": "static/image/dir.png",
-			"selectedIconPath": "static/image/dir_select.png"
+			"iconPath": "static/image/user.png",
+			"selectedIconPath": "static/image/user_select.png"
 		}]
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
 	}
 }
