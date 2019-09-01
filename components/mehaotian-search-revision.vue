@@ -5,7 +5,7 @@
 			<view class="content-box" :class="{'center':mode === 2}" @click="getFocus">
 				<text class="icon icon-serach"></text>
 				<!-- HM修改 增加placeholder input confirm-type confirm-->
-				<input  :placeholder="placeholder" @input="inputChange" confirm-type="search" @confirm="triggerConfirm" class="input" :class="{'center':!active && mode === 2}" :focus="isFocus" v-model="inputVal" @focus="focus" @blur="blur"/>
+				<input :placeholder="placeholder" @input="inputChange" confirm-type="search" @confirm="triggerConfirm" class="input" :class="{'center':!active && mode === 2}" :focus="isFocus" v-model="inputVal" @focus="focus" @blur="blur"/>
 				<!-- <view v-if="!active && mode === 2" class="input sub" @click="getFocus">请输入搜索内容</view> -->
 				<!-- HM修改 @click换成@click.stop阻止冒泡 -->
 				<text v-if="isDelShow" class="icon icon-del"  @click.stop="clear"></text>
@@ -14,7 +14,7 @@
 				搜索
 			</view>
 		</view>
-		<view  v-if="button === 'outside'" class="button" :class="{'active':show||active}" @click="search">
+		<view v-if="button === 'outside'" class="button" :class="{'active':show||active}" @click="search">
 			<view class="button-item">{{!show?searchName:'搜索'}}</view>
 		</view>
 	</view>
@@ -34,7 +34,7 @@ export default {
 		},
 		value: {
 			type: String,
-			default:false
+			default: ''
 		},
 		button: {
 			value: String,
@@ -59,6 +59,10 @@ export default {
 		};
 	},
 	methods: {
+		parentChange () {
+			this.active = true;
+			this.isDelShow = true;
+		},
 		//HM修改 触发组件confirm事件
 		triggerConfirm(){
 			this.$emit('confirm', false);
@@ -77,6 +81,7 @@ export default {
 			if (this.inputVal) {
 				this.isDelShow = true;
 			}
+			this.$emit('showKeyWordList')
 		},
 		blur() {
 			this.isFocus = false;
@@ -91,7 +96,7 @@ export default {
 			this.inputVal = '';
 			this.active = false;
 			//HM修改 清空内容时候触发组件input
-			this.$emit('input', '');
+			this.$emit('input', '')
 			//this.$emit('search', '');//HM修改 清空内容时候不进行搜索
 			
 		},
@@ -108,7 +113,6 @@ export default {
 					return;
 				}
 			}
-			console.log(this.inputVal); 
 			this.$emit('search', this.inputVal?this.inputVal:this.placeholder);
 		}
 	},
@@ -174,8 +178,8 @@ export default {
 				}
 				&.sub {
 					// position: absolute;
-					width: auto;
-					color: grey;
+					// width: auto;
+					// color: grey;
 				}
 			}
 		}
@@ -184,7 +188,7 @@ export default {
 			flex-shrink: 0;
 			padding: 0 30upx;
 			//HM修改 按钮背景色
-			background:linear-gradient(to right,#ff9801,#ff570a);
+			background:linear-gradient(to right, #64E635, #8EE627);
 			//background: $uni-color-success;
 			line-height: 60upx;
 			color: #fff;

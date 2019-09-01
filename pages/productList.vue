@@ -41,9 +41,9 @@
 	    </view>
 	    <view class="collectionBox" v-if="collection.isShow">
 	      <view class="Boxtitle">请选择收藏夹</view>
-	      <navigator :url="'/pages/collectorStore?productId=' + collection.product_id" class="toAddBox">
+				<view class="toAddBox" @tap="checkStore">
 					<i class="iconfont icon-store" style="font-size: 12px">新建收藏夹</i>
-				</navigator>
+				</view>
 	      <view class="selectBox">
 	        <view class="section">
 	          <picker @change="bindPickerChange" :value="collection.selectIndex" :range="collection.collectors">
@@ -271,6 +271,27 @@
 				}
 				this.collection.collectors = newArr
 			},
+			async checkStore() {
+				let checkStoreResponse = await api.authRequest({
+					url: 'collectors/check_store'
+				})
+				if (checkStoreResponse.status_code) {
+					uni.showModal({
+						title: '警告',
+						content: checkStoreResponse.message,
+						cancelColor: '#09BB07',
+						confirmText: '开通会员',
+						success: res => {
+							if (res.confirm) {
+							  uni.navigateTo({url: '/pages/toPay'});
+							}
+						}
+					})
+				}
+				uni.navigateTo({
+					url: '/pages/collectorStore?productId=' + collection.product_id
+				})
+			},
 			// 收藏操作
 			async submitCollection () {
 				let option = {}
@@ -300,10 +321,6 @@
 							}
 						}
 					})
-					// uni.showToast({
-					// 	title: collectionStoreResponse.message,
-					// 	icon: 'none'
-					// })
 					return false
 				} 
 				this.collectedList.push(productId)
@@ -320,7 +337,7 @@
 			this.noMoreData = false
 			this.option.page = 1
 			await this.getProducts(true)
-			wx.stopPullDownRefresh()
+			uni.stopPullDownRefresh()
 		},
 		// 加载更多
 		async onReachBottom() {
