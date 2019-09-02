@@ -39,7 +39,7 @@
 			              @click="collectionHandle(product.collection, product.id)"
 			            ></i>
 			          </view>
-			          <navigator :url="'/pages/productDetail?article_id=' + product.article.id + '&user_id=' +user_id" class="navigator"></navigator>
+			          <navigator :url="'/pages/productDetail?article_id=' + product.article.id + '&user_id=' + user_id" class="navigator"></navigator>
 			        </view>
 			        <ad unit-id="adunit-339b94eca8c9de27" v-if="index !== 0 && index % 15 == 0"></ad>
 			      </view>

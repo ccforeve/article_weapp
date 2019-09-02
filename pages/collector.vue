@@ -1,7 +1,7 @@
 <template>
   <view class="collection">
       <view class="headTitle">
-        <i class="iconfont icon_collection">收藏夹</i>
+        <i class="iconfont icon_collection" style="color: red;">收藏夹</i>
       </view>
       <!-- 收藏列表 -->
       <view class="list">

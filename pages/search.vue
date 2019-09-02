@@ -43,14 +43,14 @@
 			</scroll-view>
 		</view>
 		<view class="page__bd" v-show="isShowProductList">
-			<view style="height: 20px;line-height: :;px;">
+			<view style="height: 2rem;line-height: 2rem;position: fixed;top: 2.5rem;z-index: 999;background-color: rgb(242,242,242);width: 100%;">
 				<view class="type-select" :class="{selected: selected == 0}" @tap="selectQuey('all', 0 , 0)">全部</view>
 				<view class="type-select" :class="{selected: selected == 1}" @tap="selectQuey('state', 1, 1)">停售</view>
 				<view class="type-select" :class="{selected: selected == 2}" @tap="selectQuey('kind', 1, 2)">复消</view>
 				<view class="type-select" :class="{selected: selected == 3}" @tap="selectQuey('kind', 2, 3)">报单</view>
 				<view class="type-select" :class="{selected: selected == 4}" @tap="selectQuey('kind', 3, 4)">预定</view>
 			</view>
-		  <view class="weui-panel weui-panel_access">
+		  <view class="weui-panel weui-panel_access" style="position: absolute;top: 4rem;left: 0;right: 0;">
 		    <view class="weui-panel__bd">
 		      <view v-for="(product, index) in products" :key="index">
 		        <view class="weui-media-box weui-media-box_appmsg" style="border-top: 1px solid #e5e5e5;margin: 0 15px;">
@@ -125,6 +125,7 @@
 					collectors: [],
 					product_id: 0  // 当前要收藏产品的id
 				},
+				user_id: 0,
 				products: [],
 				collectedList: [],
 				option: {},
@@ -143,6 +144,10 @@
 				if (user.code === 200) {
 					uni.setStorageSync('user_id', user.user_id)
 					this.user_id = user.user_id
+				} else {
+					uni.showToast({title: '未授权登录', icon: 'none'})
+					uni.navigateTo({url: '/pages/toLogin'})
+					return false
 				}
 			}
 		},
@@ -313,6 +318,7 @@
 			selectQuey (type, value, selected) {
 				this.option.kind = ''
 				this.option.state = ''
+				this.option.page = 1
 				if (type !== 'all') {
 					this.option[type] = value
 				}
@@ -672,19 +678,19 @@
 	}
 	.type-select {
 		float: left;
-		padding: 0 1rem;
+		padding: 0 5%;
 	}
 	.type-select.selected {
 		color: #3CC51F;
 	}
 	view{display:block;}
-	.search-box {width:95%;background-color:rgb(242,242,242);padding:15upx 2.5%;display:flex;justify-content:space-between;}
+	.search-box {width:95%;background-color:rgb(242,242,242);padding:15upx 2.5%;display:flex;justify-content:space-between;position: fixed;height:2rem;z-index: 999;}
 	.search-box .mSearch-input-box{width: 100%;}
 	.search-box .input-box {width:85%;flex-shrink:1;display:flex;justify-content:center;align-items:center;}
 	.search-box .search-btn {width:15%;margin:0 0 0 2%;display:flex;justify-content:center;align-items:center;flex-shrink:0;font-size:28upx;color:#fff;background:linear-gradient(to right,#ff9801,#ff570a);border-radius:60upx;}
 	.search-box .input-box>input {width:100%;height:60upx;font-size:32upx;border:0;border-radius:60upx;-webkit-appearance:none;-moz-appearance:none;appearance:none;padding:0 3%;margin:0;background-color:#ffffff;}
 	.placeholder-class {color:#9e9e9e;}
-	.search-keyword {width:100%;background-color:rgb(242,242,242);}
+	.search-keyword {width:100%;background-color:rgb(242,242,242);position: absolute;top: 3rem;}
 	.keyword-list-box {height:calc(100vh - 110upx);padding-top:10upx;border-radius:20upx 20upx 0 0;background-color:#fff;}
 	.keyword-entry-tap {background-color:#eee;}
 	.keyword-entry {width:94%;height:80upx;margin:0 3%;font-size:30upx;color:#333;display:flex;justify-content:space-between;align-items:center;border-bottom:solid 1upx #e7e7e7;}

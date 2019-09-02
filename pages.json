@@ -33,13 +33,6 @@
 			}
 		},
 		{
-			"path": "pages/productSearch",
-			"style": {
-				"navigationBarTitleText": "搜索结果",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
 			"path": "pages/toLogin",
 			"style": {
 				"navigationBarTitleText": "登录"

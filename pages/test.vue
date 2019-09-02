@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="collection">
-			<view class="headTitle" style="border-bottom: 1px dashed #bbbbbb;">
+			<view class="headTitle">
 				<view class="user">{{user.nickname}}的收藏夹</view>
 				<view class="info">手机号:{{user.phone}} / 微信号:{{user.wechat}}</view>
 			</view>
@@ -35,7 +35,7 @@
 					    零售：{{list.fee[collection.id]}}元，会员价：{{list.memberFee[collection.id]}}元+{{list.volume[collection.id]}}券
 					  </text>
 					</view>
-					<text class="prodNum">{{ collection.quantity }}{{ collection.product.min_unit }}</text>
+					<text class="prodNum">{{ collection.quantity}}{{ collection.product.min_unit}}</text>
 				</navigator>
 			</view>
 		</view>
@@ -81,10 +81,10 @@
 			}
 		},
 		async onLoad(option) {
-			this.option.user_id = option.user_id
-			this.option.collector_id = option.collector_id
-			await this.getUser()
-			await this.getCollector()				// 收藏夹详情
+			this.option.user_id = 50
+			this.option.collector_id = 1
+			this.getUser()
+			this.getCollector()				// 收藏夹详情
 			await this.getCollections()			// 收藏夹下的收藏列表
 			this.totalNumHandle()   				// 统计数量
 			this.totalFeeHandle()   				// 统计总价
