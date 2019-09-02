@@ -65,7 +65,7 @@
 		            <i
 		              class="iconfont icon-collection"
 		              :class="{'collected': collectedList.find(value => {if (value == product.id) { return value }})}"
-		              @click="collectionHandle(product.collection, product.id)"
+		              @click="collectionHandle(product.id)"
 		            ></i>
 		          </view>
 		          <navigator :url="'/pages/productDetail?article_id=' + product.article.id + '&user_id=' +user_id" class="navigator"></navigator>
@@ -209,8 +209,11 @@
 					// 初始搜索类型
 					this.option.kind = ''
 					this.option.state = ''
-					// 初始化产品列表
+					this.option.page = 1
+					this.noMoreData = false
+					// 初始化产品列表及重置产品类型选择
 					this.products = []
+					this.selected = 0
 					return;
 				}
 				var zhongwen = /^[\u4e00-\u9fa5]+|[\u4e00-\u9fa5][0-9]+$/
@@ -272,6 +275,7 @@
 			},
 			// 执行搜索
 			doSearch(key) {
+				this.selected = 0		// 重置产品类型选择
 				this.$refs.child.parentChange()
 				key = key ? key : this.keyword ? this.keyword : this.defaultKeyword
 				this.keyword = key
@@ -319,6 +323,7 @@
 				this.option.kind = ''
 				this.option.state = ''
 				this.option.page = 1
+				this.noMoreData = false
 				if (type !== 'all') {
 					this.option[type] = value
 				}
@@ -410,7 +415,7 @@
 				})
 			},
 			// 收藏操作
-			async collectionHandle(collection, productId) {
+			async collectionHandle(productId) {
 				let _this = this
 				if (!this.user_id) {
 					uni.showModal({
@@ -425,7 +430,7 @@
 					})
 					return false
 				}
-				if (collection) {
+				if (this.collectedList.find(value => {if(value == productId) {return true}})) {
 					uni.showModal({
 						title: '警告',
 						content: '确定要取消收藏此产品吗？',
@@ -434,7 +439,7 @@
 						success: async function (res) {
 							if (res.confirm) {
 								await api.authRequest({
-									url: 'collections/' + collection.id,
+									url: 'collections/' + productId,
 									method: 'DELETE'
 								})
 								var collected = _this.collectedList

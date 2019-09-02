@@ -26,7 +26,7 @@
 	                <i
 	                  class="iconfont icon-collection"
 	                  :class="{'collected': collectedList.find(value => {if (value == product.id) { return value }})}"
-	                  @click="collectionHandle(product.collection, product.id)"
+	                  @click="collectionHandle(product.id)"
 	                ></i>
 	              </view>
 	              <navigator :url="'/pages/productDetail?article_id=' + product.article.id + '&user_id=' +user_id" class="navigator"></navigator>
@@ -181,7 +181,7 @@
 					// 总数
 					this.total = productResponse.products.total
 					// 已收藏产品
-					this.collectedList = reset ? collectedList : this.collectedList.concat(collectedList,)
+					this.collectedList = reset ? collectedList : this.collectedList.concat(collectedList)
 					// 判断是否是最后一页
 					if (productResponse.products.current_page === productResponse.products.last_page) {
 						this.noMoreData = true
@@ -194,7 +194,7 @@
 				}
 			},
 			// 收藏操作
-			async collectionHandle(collection, productId) {
+			async collectionHandle(productId) {
 				let _this = this
 				if (!this.user_id) {
 					uni.showModal({
@@ -209,7 +209,7 @@
 					})
 					return false
 				}
-				if (collection) {
+				if (this.collectedList.find(value => {if(value == productId) {return true}})) {
 					uni.showModal({
 						title: '警告',
 						content: '确定要取消收藏此产品吗？',
@@ -218,7 +218,7 @@
 						success: async function (res) {
 							if (res.confirm) {
 								await api.authRequest({
-									url: 'collections/' + collection.id,
+									url: 'collections/' + productId,
 									method: 'DELETE'
 								})
 								var collected = _this.collectedList

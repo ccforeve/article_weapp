@@ -115,10 +115,7 @@
 		  this.collector_id = query.collector_id
 			this.state = query.state
 			await this.getCollections()
-			this.totalNumHandle()   // 统计数量
-			this.totalFeeHandle()   // 统计总价
-			this.totalMemberFeeHandle()   // 统计会员价
-			this.totalVolumeHandle()   // 统计优惠劵
+			this.statistics()
 		},
 		async onShow() {
 		  this.getCollector(this.collector_id)	// 从缓存获取当前收藏夹
@@ -208,7 +205,8 @@
 					uni.showToast({
 						title: '删除收藏夹成功！',
 						icon: 'success',
-						duration: 1000
+						duration: 1000,
+						mask: true
 					})
 					setTimeout(function () {
 						uni.navigateBack({})
@@ -244,8 +242,13 @@
 						}
 					})
 					this.collections.splice(findCollection, 1)
-					// 刷新收藏夹列表
-					this.refresh(true)
+					this.refresh(true)		// 刷新收藏夹列表
+					// 更新底数数据
+					delete this.list.quantity[collectionId]
+					delete this.list.fee[collectionId]
+					delete this.list.memberFee[collectionId]
+					delete this.list.volume[collectionId]
+					this.statistics()
 				}
 			},
 			// 加数量
@@ -254,10 +257,7 @@
 				this.list.fee[collection.id] = (Number(this.list.fee[collection.id]) + Number(collection.product.price)).toFixed(2)
 				this.list.memberFee[collection.id] = (Number(this.list.memberFee[collection.id]) + Number(collection.product.money)).toFixed(2)
 				this.list.volume[collection.id] = (Number(this.list.volume[collection.id]) + Number(collection.product.ticket)).toFixed(2)
-				this.totalNumHandle()
-				this.totalFeeHandle()
-				this.totalMemberFeeHandle()
-				this.totalVolumeHandle()
+				this.statistics()
 			},
 			// 减数量
 			subNum (collection) {
@@ -269,10 +269,7 @@
 				this.list.fee[collection.id] = (Number(this.list.fee[collection.id]) - Number(collection.product.price)).toFixed(2)
 				this.list.memberFee[collection.id] = (Number(this.list.memberFee[collection.id]) - Number(collection.product.money)).toFixed(2)
 				this.list.volume[collection.id] = (Number(this.list.volume[collection.id]) - Number(collection.product.ticket)).toFixed(2)
-				this.totalNumHandle()
-				this.totalFeeHandle()
-				this.totalMemberFeeHandle()
-				this.totalVolumeHandle()
+				this.statistics()
 			},
 			// 统计数量
 			totalNumHandle () {
@@ -308,6 +305,13 @@
 					volume += Number(v[key])
 				}
 				this.footer.totalVolume = volume.toFixed(2)
+			},
+			// 统计
+			statistics () {
+				this.totalNumHandle()   				// 统计数量
+				this.totalFeeHandle()   				// 统计总价
+				this.totalMemberFeeHandle()   	// 统计会员价
+				this.totalVolumeHandle()   			// 统计优惠劵
 			},
 			// 修改收藏的数量
 			async updateCollectionHandle () {
