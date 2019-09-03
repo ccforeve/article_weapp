@@ -41,7 +41,7 @@
 	          <text class="add" @tap="addNum(collection)">+</text>
 	          <text class="unit">单位: {{ collection.product.min_unit }}</text>
 	        </view>
-	        <text class="iconfont iconDel icon-iconDel" @tap="delCollectionHandle(collection.id)"></text>
+	        <text class="iconfont iconDel icon-iconDel" @tap="delCollectionHandle(collection.product.id)"></text>
 	      </view>
 	    </view>
 	  </view>
