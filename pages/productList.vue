@@ -74,6 +74,7 @@
 					collectors: [],
 					product_id: 0  // 当前要收藏产品的id
 				},
+				isStoreCollector: false,
 				collectedList: [],
 				products: [],
 				user_id: 0,
@@ -102,7 +103,7 @@
 		},
 		onShow() {
 			let vuexProductId = this.storeCollectorResponseId
-			if (vuexProductId) {
+			if (vuexProductId && this.isStoreCollector) {
 				this.collectedList.push(vuexProductId)
 				uni.showToast({
 					title: '收藏成功',
@@ -287,9 +288,11 @@
 							}
 						}
 					})
+					return false
 				}
+				this.this.isStoreCollector = true
 				uni.navigateTo({
-					url: '/pages/collectorStore?productId=' + collection.product_id
+					url: '/pages/collectorStore?productId=' + this.collection.product_id
 				})
 			},
 			// 收藏操作

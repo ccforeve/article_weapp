@@ -125,6 +125,7 @@
 					collectors: [],
 					product_id: 0  // 当前要收藏产品的id
 				},
+				isStoreCollector: false,
 				user_id: 0,
 				products: [],
 				collectedList: [],
@@ -150,6 +151,24 @@
 					return false
 				}
 			}
+		},
+		onShow() {
+			let vuexProductId = this.storeCollectorResponseId
+			if (vuexProductId && this.isStoreCollector) {
+				this.collectedList.push(vuexProductId)
+				uni.showToast({
+					title: '收藏成功',
+					icon: "success",
+					duration: 2000
+				});
+				this.setStoreCollector(null)
+				this.showHandle()
+			}
+		},
+		onHide() {
+			this.keyword = ''
+			this.inputChange('')
+			this.collection.isShow = false
 		},
 		computed: {
 			...mapState(['collectorListVuex', 'storeCollectorResponseId'])
@@ -393,6 +412,7 @@
 					})
 				}
 			},
+			// 新增收藏夹
 			async checkStore() {
 				let checkStoreResponse = await api.authRequest({
 					url: 'collectors/check_store'
@@ -409,9 +429,11 @@
 							}
 						}
 					})
+					return false
 				}
+				this.isStoreCollector = true
 				uni.navigateTo({
-					url: '/pages/collectorStore?productId=' + collection.product_id
+					url: '/pages/collectorStore?productId=' + this.collection.product_id
 				})
 			},
 			// 收藏操作

@@ -74,7 +74,7 @@
 	    </view>
 	    <view>你确定要删除此产品吗？</view>
 	      <view>
-	        <text class="yesBtn" @tap="delCollectionHandle(delCollectionId, 'del')">确定</text>
+	        <text class="yesBtn" @tap="delCollectionHandle(delProductId, 'del')">确定</text>
 	        <text class="noBtn" @tap="delCollectionHandle()">取消</text>
 	      </view>
 	  </view>
@@ -95,8 +95,9 @@
 				delCollectorShow: false,
 				delCollectionShow: false,
 				delCollectionId: null,		// 需要删除的收藏id
+				delProductId: null,				// 需要删除的产品id
 				option: {},
-				state: null,						// 复制收藏夹状态
+				state: null,							// 复制收藏夹状态
 				list: {
 				  quantity: {},
 				  fee: {},
@@ -217,15 +218,16 @@
 				
 			},
 			// 删除产品收藏
-			delCollectionHandle (collectionId, option = 'show') {
+			async delCollectionHandle (productId, option = 'show') {
 				var _this = this
 				var isShowToast = false
-				this.delCollectionId = collectionId
+				this.delProductId = productId
 				if (option === 'del') {
-					api.authRequest({
-						url: 'collections/' + this.delCollectionId,
+					let collectionId = await api.authRequest({
+						url: 'collections/' + productId,
 						method: 'DELETE'
 					})
+					this.delCollectionId = collectionId
 					isShowToast = true
 				}
 				this.delShow = !this.delShow
@@ -237,17 +239,17 @@
 					})
 					// 删除页面列表中的数据
 					let findCollection = this.collections.findIndex(value => {
-						if (value.id == _this.delCollectionId) {
+						if (value.product_id == productId) {
 							return value
 						}
 					})
 					this.collections.splice(findCollection, 1)
 					this.refresh(true)		// 刷新收藏夹列表
 					// 更新底数数据
-					delete this.list.quantity[collectionId]
-					delete this.list.fee[collectionId]
-					delete this.list.memberFee[collectionId]
-					delete this.list.volume[collectionId]
+					delete this.list.quantity[this.delCollectionId]
+					delete this.list.fee[this.delCollectionId]
+					delete this.list.memberFee[this.delCollectionId]
+					delete this.list.volume[this.delCollectionId]
 					this.statistics()
 				}
 			},
